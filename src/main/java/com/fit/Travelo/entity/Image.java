@@ -1,6 +1,7 @@
 package com.fit.Travelo.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +21,7 @@ public class Image {
 
     @ManyToOne
     @JoinColumn(name = "tour_info_id")
+    @JsonIgnore
     private TourInfo tourInfo;
 
     private String imageUri;

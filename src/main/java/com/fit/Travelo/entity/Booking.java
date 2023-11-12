@@ -23,6 +23,10 @@ public class Booking {
     private Customer customer;
 
     @ManyToOne
+    @JoinColumn(name = "staff_id")
+    private Staff staff;
+
+    @ManyToOne
     @JoinColumn(name = "tour_id")
     private Tour tour;
 }

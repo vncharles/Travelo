@@ -32,7 +32,10 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public void add(LocationRequest request) {
-
+        Location location = new Location();
+        location.setDescription(request.getDescription());
+        location.setProvince(request.getProvince());
+        locationRepository.save(location);
     }
 
     @Override
