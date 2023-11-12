@@ -2,6 +2,7 @@ package com.fit.Travelo.service.impl;
 
 import com.fit.Travelo.entity.Tour;
 import com.fit.Travelo.entity.TourInfo;
+import com.fit.Travelo.exception.NotFoundException;
 import com.fit.Travelo.model.request.TourInfoRequest;
 import com.fit.Travelo.model.request.TourRequest;
 import com.fit.Travelo.repository.TourInfoRepository;
