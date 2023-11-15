@@ -28,7 +28,7 @@ public class LocationController {
         return ResponseEntity.ok(locationService.getDetail(id));
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<SuccessResponse> create(@RequestBody LocationRequest request) {
         locationService.add(request);
 

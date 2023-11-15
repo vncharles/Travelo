@@ -15,6 +15,8 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer numberPerson;
+
+    @Enumerated(EnumType.STRING)
     private EStatusBooking status;
     private Double totalPrice;
 

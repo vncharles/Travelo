@@ -7,18 +7,21 @@ import com.fit.Travelo.model.request.TourInfoRequest;
 import com.fit.Travelo.model.request.TourRequest;
 import com.fit.Travelo.repository.TourInfoRepository;
 import com.fit.Travelo.repository.TourRepository;
+import com.fit.Travelo.service.TourInfoService;
 import com.fit.Travelo.service.TourService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class TourServiceImpl implements TourService {
-   private final TourRepository tourRepository;
-
+    private final TourRepository tourRepository;
+    private final TourInfoService tourInfoService;
 
     @Override
     public List<Tour> getList() {
@@ -36,9 +39,14 @@ public class TourServiceImpl implements TourService {
     @Override
     public void add(TourRequest request) {
         Tour tour = new Tour();
+        TourInfo tourInfo = tourInfoService.getDetail(request.getTourInfoId());
+        tour.setTourInfo(tourInfo);
         tour.setCreateAt(LocalDate.now());
-        tour.setStartDate(request.getStartDate());
-        tour.setEndDate(request.getEndDate());
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//        LocalDateTime dateTime = LocalDateTime.parse(dateString, dateTimeFormatter);
+
+        tour.setStartDate(LocalDateTime.parse(request.getStartDate(), dateTimeFormatter));
+        tour.setEndDate(LocalDateTime.parse(request.getEndDate(), dateTimeFormatter));
         tour.setPrice(request.getPrice());
         tour.setStock(request.getStock());
         tourRepository.save(tour);
@@ -51,11 +59,15 @@ public class TourServiceImpl implements TourService {
             throw new NotFoundException(404, "Tour ID is not found");
         });
 
+        if (request.getTourInfoId() != null){
+            tour.setTourInfo(tourInfoService.getDetail(request.getTourInfoId()));
+        }
+//        DateTimeFormatter.ofPattern("dd-MM-yyyy hh:MM:ss")
         if (request.getStartDate() != null){
-            tour.setStartDate(request.getStartDate());
+            tour.setStartDate(LocalDateTime.parse(request.getStartDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss")));
         }
         if (request.getEndDate() != null){
-            tour.setEndDate(request.getEndDate());
+            tour.setEndDate(LocalDateTime.parse(request.getEndDate()));
         }
         if (request.getStock() != null){
             tour.setStock(request.getStock());

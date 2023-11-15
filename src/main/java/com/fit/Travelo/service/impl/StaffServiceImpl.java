@@ -8,6 +8,8 @@ import com.fit.Travelo.service.StaffService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
@@ -35,7 +37,8 @@ public class StaffServiceImpl implements StaffService {
         staff.setPersonId(request.getPersonId());
         staff.setAddress(request.getAddress());
         staff.setGender(request.getGender());
-        staff.setBirthday(request.getBirthday());
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        staff.setBirthday(LocalDate.parse(request.getBirthday(), format));
 
         staffRepository.save(staff);
     }
@@ -64,7 +67,8 @@ public class StaffServiceImpl implements StaffService {
             staff.setGender(request.getGender());
         }
         if (request.getBirthday() != null){
-            staff.setBirthday(request.getBirthday());
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            staff.setBirthday(LocalDate.parse(request.getBirthday(), format));
         }
         staffRepository.save(staff);
     }

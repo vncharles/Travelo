@@ -23,13 +23,12 @@ public class Tour {
     private LocalDateTime endDate;
     private Double price;
     private Integer stock;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    private List<Booking> bookings;
-
     @ManyToOne
     @JoinColumn(name = "tour_info_id")
     private TourInfo tourInfo;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    private List<Booking> bookings;
 
     public void increaseStock(int quantity) {
         stock += quantity;

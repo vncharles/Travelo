@@ -27,7 +27,12 @@ public class TourInfoServiceImpl implements TourInfoService {
         TourInfo tourInfo = tourInfoRepository.findById(id).orElseThrow(() ->{
             throw new NotFoundException(404, "TourInfo id is not found");
         });
-        return null;
+        return tourInfo;
+
+
+
+
+
     }
 
     @Override
@@ -38,6 +43,8 @@ public class TourInfoServiceImpl implements TourInfoService {
 
         Location location = locationRepository.findById(request.getLocationId()).get();
         tourInfo.setLocation(location);
+        tourInfoRepository.save(tourInfo);
+
     }
 
     @Override

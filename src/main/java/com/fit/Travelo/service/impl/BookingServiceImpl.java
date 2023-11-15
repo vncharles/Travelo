@@ -50,7 +50,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setStaff(staff);
         booking.setTour(tour);
         booking.setNumberPerson(request.getNumberPerson());
-        booking.setStatus(EStatusBooking.UNPAID);
+        booking.setStatus(request.getStatus());
         booking.setTotalPrice(request.getTotalPrice());
 
         bookingRepository.save(booking);
