@@ -30,6 +30,9 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public void add(StaffRequest request) {
+
+
+
         Staff staff = new Staff();
         staff.setName(request.getName());
         staff.setEmail(request.getEmail());
@@ -37,6 +40,7 @@ public class StaffServiceImpl implements StaffService {
         staff.setPersonId(request.getPersonId());
         staff.setAddress(request.getAddress());
         staff.setGender(request.getGender());
+
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         staff.setBirthday(LocalDate.parse(request.getBirthday(), format));
 

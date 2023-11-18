@@ -1,5 +1,6 @@
 package com.fit.Travelo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,6 +28,7 @@ public class Tour {
     @JoinColumn(name = "tour_info_id")
     private TourInfo tourInfo;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     private List<Booking> bookings;
 

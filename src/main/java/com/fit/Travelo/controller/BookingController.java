@@ -1,6 +1,7 @@
 package com.fit.Travelo.controller;
 
 import com.fit.Travelo.entity.Booking;
+import com.fit.Travelo.model.BookingDTO;
 import com.fit.Travelo.model.request.BookingRequest;
 import com.fit.Travelo.service.BookingService;
 import com.fit.Travelo.utils.SuccessResponse;
@@ -17,7 +18,7 @@ public class BookingController {
     private final BookingService bookingService;
 
     @GetMapping
-    public ResponseEntity<List<Booking>> getAll(){
+    public ResponseEntity<List<BookingDTO>> getAll(){
         return ResponseEntity.ok(bookingService.getList());
     }
 
@@ -27,9 +28,15 @@ public class BookingController {
     }
 
     @PostMapping
-    public ResponseEntity<SuccessResponse> create(@RequestBody BookingRequest request){
-        bookingService.add(request);
+    public ResponseEntity<SuccessResponse> customerCreate(@RequestBody BookingRequest request){
+        bookingService.addByCustomer(request);
         return ResponseEntity.ok(new SuccessResponse("Create Booking is success"));
+    }
+
+    @PostMapping("/staff-create")
+    public ResponseEntity<SuccessResponse> staffCreate(@RequestBody BookingRequest request){
+        bookingService.addByStaff(request);
+        return ResponseEntity.ok(new SuccessResponse("Create Booking by Staff is success"));
     }
 
     @PutMapping("/{id}")

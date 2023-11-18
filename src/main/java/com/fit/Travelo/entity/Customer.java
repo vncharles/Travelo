@@ -22,7 +22,7 @@ public class Customer {
     private String address;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private User account;
+    private User user;
 
     @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private List<Booking> bookings;

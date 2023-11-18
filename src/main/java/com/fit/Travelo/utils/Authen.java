@@ -16,7 +16,7 @@ public class Authen {
         }
     }
 
-    public static String username() {
+    public static String getEmail() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         if(username == null || username.equals("anonymousUser")){

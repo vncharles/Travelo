@@ -1,23 +1,23 @@
-package com.fit.Travelo.model.response;
+package com.fit.Travelo.model;
 
 import com.fit.Travelo.entity.EStatusBooking;
-import com.fit.Travelo.entity.Staff;
 import com.fit.Travelo.entity.Tour;
-import com.fit.Travelo.entity.TourInfo;
+import com.fit.Travelo.model.response.CustomerBookingRespone;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class BookingCustomerResponse {
+@Data @Builder
+public class BookingDTO {
     private Long id;
     private Integer numberPerson;
     private String status;
     private Double totalPrice;
-    private Staff staff;
-    private TourCustomerResponse tour;
+    private CustomerBookingRespone customer;
+    private StaffDTO staff;
+    private Tour tour;
+
 }

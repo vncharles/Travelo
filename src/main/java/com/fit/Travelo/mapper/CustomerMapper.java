@@ -4,6 +4,7 @@ import com.fit.Travelo.entity.Customer;
 import com.fit.Travelo.entity.Tour;
 import com.fit.Travelo.model.CustomerDTO;
 import com.fit.Travelo.model.response.BookingCustomerResponse;
+import com.fit.Travelo.model.response.CustomerBookingRespone;
 import com.fit.Travelo.model.response.TourCustomerResponse;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class CustomerMapper {
                     .totalPrice(booking.getTotalPrice())
                     .staff(booking.getStaff())
                     .tour(toTourCustomerResponse(booking.getTour()))
+
                     .build();
         })).collect(Collectors.toList());
 
@@ -41,6 +43,16 @@ public class CustomerMapper {
                 .price(tour.getPrice())
                 .stock(tour.getStock())
                 .tourInfo(tour.getTourInfo())
+                .build();
+    }
+
+    public static CustomerBookingRespone customerToCustomerBookingResponse(Customer customer) {
+
+        return  CustomerBookingRespone.builder()
+                .id(customer.getId())
+                .name(customer.getName())
+                .email(customer.getEmail())
+                .address(customer.getAddress())
                 .build();
     }
 }

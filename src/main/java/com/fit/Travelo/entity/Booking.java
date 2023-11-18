@@ -31,4 +31,14 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "tour_id")
     private Tour tour;
+
+
+    private void setTotalPrice(){
+        totalPrice = tour.getPrice() * numberPerson;
+    }
+
+    public Double getTotalPrice(){
+        setTotalPrice();
+        return totalPrice;
+    }
 }

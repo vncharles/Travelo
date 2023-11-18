@@ -1,6 +1,7 @@
 package com.fit.Travelo.service.impl;
 
 import com.fit.Travelo.entity.Customer;
+import com.fit.Travelo.exception.BadRequestException;
 import com.fit.Travelo.exception.NotFoundException;
 import com.fit.Travelo.mapper.CustomerMapper;
 import com.fit.Travelo.model.CustomerDTO;
@@ -41,11 +42,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void add(CustomerRequest request) {
+        if (request.getEmail() == null || request.getName() == null){
+            throw new BadRequestException(400, "email and name need be required");
+        }
         Customer customer = new Customer();
         customer.setName(request.getName());
         customer.setEmail(request.getEmail());
-        customer.setPhone(request.getPhone());
-        customer.setAddress(request.getAddress());
+        customer.setPhone(request.getPhone() != null ? request.getPhone() : null);
+        customer.setAddress(request.getAddress() != null ? request.getAddress() : null);
         customerRepository.save(customer);
     }
 

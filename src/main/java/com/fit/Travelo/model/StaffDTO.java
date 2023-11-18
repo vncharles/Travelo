@@ -1,20 +1,17 @@
-package com.fit.Travelo.entity;
+package com.fit.Travelo.model;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "t_staff")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Staff {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Builder
+public class StaffDTO {
     private Long id;
     private String name;
     private String email;
@@ -23,7 +20,4 @@ public class Staff {
     private String address;
     private Boolean gender;
     private LocalDate birthday;
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private User user;
 }
