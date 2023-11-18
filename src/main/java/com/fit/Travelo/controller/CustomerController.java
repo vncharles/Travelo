@@ -1,6 +1,7 @@
 package com.fit.Travelo.controller;
 
 import com.fit.Travelo.entity.Customer;
+import com.fit.Travelo.model.CustomerDTO;
 import com.fit.Travelo.model.request.CustomerRequest;
 import com.fit.Travelo.service.CustomerService;
 import com.fit.Travelo.utils.SuccessResponse;
@@ -19,7 +20,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @GetMapping("")
-    public ResponseEntity<List<Customer>> getAll(){
+    public ResponseEntity<List<CustomerDTO>> getAll(){
         return ResponseEntity.ok(customerService.getList());
     }
 

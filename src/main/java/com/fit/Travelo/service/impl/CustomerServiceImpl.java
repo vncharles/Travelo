@@ -2,21 +2,33 @@ package com.fit.Travelo.service.impl;
 
 import com.fit.Travelo.entity.Customer;
 import com.fit.Travelo.exception.NotFoundException;
+import com.fit.Travelo.mapper.CustomerMapper;
+import com.fit.Travelo.model.CustomerDTO;
 import com.fit.Travelo.model.request.CustomerRequest;
+import com.fit.Travelo.repository.BookingRepository;
 import com.fit.Travelo.repository.CustomerRepository;
 import com.fit.Travelo.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
+    private final BookingRepository bookingRepository;
+
     @Override
-    public List<Customer> getList() {
-        return customerRepository.findAll();
+    public List<CustomerDTO> getList() {
+        List<Customer> list = customerRepository.findAll();
+
+        return list.stream().map((customer)->{
+            customer.setBookings(bookingRepository.findByCustomer(customer));
+
+            return CustomerMapper.customerToCustomerDTO(customer);
+        }).collect(Collectors.toList());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.fit.Travelo.service;
 
 import com.fit.Travelo.entity.Customer;
+import com.fit.Travelo.model.CustomerDTO;
 import com.fit.Travelo.model.request.CustomerRequest;
 import org.springframework.stereotype.Service;
 
@@ -8,7 +9,7 @@ import java.util.List;
 
 @Service
 public interface CustomerService {
-    List<Customer> getList();
+    List<CustomerDTO> getList();
 
     Customer getDetail(Long id);
 
