@@ -3,6 +3,7 @@ package com.fit.Travelo.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "t_account")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Data @Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +21,7 @@ public class User {
     private boolean active;
     @ManyToOne()
     @JoinColumn(name = "role_id")
-    private Role roles;
+    private Role role;
 
 
 }

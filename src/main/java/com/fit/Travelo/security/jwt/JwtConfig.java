@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class JwtConfig {
 
-    private final String secret = "MOCK_PROJECT_TEAM2";
+    private final String secret = "3TD_TRAVELO";
 
     private final int expiration = 86400000;
 

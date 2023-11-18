@@ -1,9 +1,10 @@
 package com.fit.Travelo.model.response;
 
+import lombok.Builder;
 import lombok.Data;
 
 
-@Data
+@Data @Builder
 public class JwtResponse {
     private String token;
     private String type = "Bearer";
@@ -11,10 +12,10 @@ public class JwtResponse {
     private String email;
     private String role;
 
-    public JwtResponse(String accessToken, Long id, String email, String role) {
-        this.token = accessToken;
-        this.id = id;
-        this.email = email;
-        this.role = role;
-    }
+//    public JwtResponse(String accessToken, Long id, String email, String role) {
+//        this.token = accessToken;
+//        this.id = id;
+//        this.email = email;
+//        this.role = role;
+//    }
 }

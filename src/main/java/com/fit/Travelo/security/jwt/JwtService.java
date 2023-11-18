@@ -28,37 +28,6 @@ public abstract class JwtService<T> {
                 .compact();
     }
 
-    public String generateTokenWithOtp( String otp) {
-        long currentTime = System.currentTimeMillis();
-        long expirationTime = currentTime + jwtConfig.getExpiration();
-
-        return Jwts.builder()
-                .claim("otp", otp)
-                .setIssuedAt(new Date(currentTime))
-                .setExpiration(new Date(expirationTime))
-                .signWith(SignatureAlgorithm.HS256, jwtConfig.getSecret())
-                .compact();
-    }
-
-
-    public Claims getDataFromToken(String token) {
-
-        return Jwts.parser()
-                .setSigningKey(jwtConfig.getSecret())
-                .parseClaimsJws(token)
-                .getBody();
-
-    }
-    public T getOtpToken(String otpToken) {
-
-        Claims claims = Jwts.parser()
-                .setSigningKey(jwtConfig.getSecret())
-                .parseClaimsJws(otpToken)
-                .getBody();
-
-        return (T) claims.get("otp");
-    }
-
     public boolean validateToken(String jwt) {
         try {
             Jwts.parser().setSigningKey(jwtConfig.getSecret()).parseClaimsJws(jwt);
