@@ -25,5 +25,5 @@ public class Staff {
     private LocalDate birthday;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Account account;
+    private User account;
 }

@@ -1,6 +1,5 @@
 package com.fit.Travelo.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +22,7 @@ public class Customer {
     private String address;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Account account;
+    private User account;
 
     @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private List<Booking> bookings;
