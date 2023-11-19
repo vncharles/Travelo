@@ -53,9 +53,4 @@ public class CustomerController {
         return null;
     }
 
-    @GetMapping("/list-person")
-    public ResponseEntity<?> getListPerson() {
-        return null;
-    }
-
 }
