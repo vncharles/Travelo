@@ -52,4 +52,8 @@ public class BookingController {
         return ResponseEntity.ok(new SuccessResponse("delete booking is success"));
     }
 
+    @GetMapping("/list-by-email")
+    public ResponseEntity<?> getListByEmail(){
+        return null;
+    }
 }

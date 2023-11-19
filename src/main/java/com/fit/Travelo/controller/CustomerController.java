@@ -48,6 +48,14 @@ public class CustomerController {
         return ResponseEntity.ok(new SuccessResponse(("delete Customer is successful")));
     }
 
+    @GetMapping("/detail-person")
+    public ResponseEntity<?> getDetailPerson() {
+        return null;
+    }
 
+    @GetMapping("/list-person")
+    public ResponseEntity<?> getListPerson() {
+        return null;
+    }
 
 }
