@@ -48,21 +48,23 @@ public class TourInfoServiceImpl implements TourInfoService {
         });
 
         TourInfo tourInfo = new TourInfo();
-        tourInfo.setDescription(request.getDescription());
-        tourInfo.setName(request.getName());
+        tourInfo.setDescription(request.getDescription() != null ? request.getDescription() :  null);
+        tourInfo.setName(request.getName() != null ? request.getName() :  null);
         tourInfo.setLocation(location);
 
         List<Image> imageList = new ArrayList<>();
-        for(MultipartFile image: images) {
-            Image newImage = new Image();
-            newImage.setTourInfo(tourInfo);
-            newImage.setImageUri(pathImage + ImageService.saveImage("images/", image));
 
-            imageList.add(newImage);
+        if (images != null) {
+            for(MultipartFile image: images) {
+                Image newImage = new Image();
+                newImage.setTourInfo(tourInfo);
+                newImage.setImageUri(pathImage + ImageService.saveImage("images/", image));
+
+                imageList.add(newImage);
+            }
+
         }
-
         tourInfo.setImages(imageList);
-
         tourInfoRepository.save(tourInfo);
     }
 

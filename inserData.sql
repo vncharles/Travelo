@@ -344,4 +344,8 @@ INSERT INTO t_booking (number_person, status, total_price, customer_id, staff_id
 (4, 'DONE', 12000000, 8, 4, 14),
 (2, 'CANCEL', 6000000, 9, 5, 15);
 
+update t_booking set created_at = current_date() where id > 0;
+
+insert into t_customer_bookings(bookings_id,customer_id)
+select id, customer_id from t_booking;
 

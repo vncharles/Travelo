@@ -36,6 +36,11 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
+    public Staff findByEmail(String email) {
+        return staffRepository.findStaffByEmail(email);
+    }
+
+    @Override
     public void add(StaffRequest request) {
         if(null==request.getName() || null==request.getEmail() ||
             null==request.getPhone() || null==request.getPersonId() ||
@@ -43,7 +48,7 @@ public class StaffServiceImpl implements StaffService {
             throw new BadRequestException(400, "Please input full info");
         }
 
-        Role role = roleRepository.findByName(ERole.ROLE_USER).orElseThrow(()->{
+        Role role = roleRepository.findByName(ERole.ROLE_STAFF).orElseThrow(()->{
             throw new BadRequestException(400, "Role is not found!");
         });
 

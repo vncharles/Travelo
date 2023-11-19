@@ -12,6 +12,8 @@ import java.util.List;
 public interface TourService {
     List<Tour> getList();
 
+    List<Tour> getListOnSale();
+
     Tour getDetail(Long id);
 
     void add(TourRequest request);

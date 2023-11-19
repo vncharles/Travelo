@@ -2,6 +2,7 @@ package com.fit.Travelo.service.impl;
 
 import com.fit.Travelo.entity.Tour;
 import com.fit.Travelo.entity.TourInfo;
+import com.fit.Travelo.exception.BadRequestException;
 import com.fit.Travelo.exception.NotFoundException;
 import com.fit.Travelo.model.request.TourInfoRequest;
 import com.fit.Travelo.model.request.TourRequest;
@@ -29,6 +30,11 @@ public class TourServiceImpl implements TourService {
     }
 
     @Override
+    public List<Tour> getListOnSale() {
+        return tourRepository.findAllByStartDateAfter(LocalDateTime.now());
+    }
+
+    @Override
     public Tour getDetail(Long id) {
         Tour tour = tourRepository.findById(id).orElseThrow(()->{
             throw new NotFoundException(404, "Tour ID is not found");
@@ -38,15 +44,31 @@ public class TourServiceImpl implements TourService {
 
     @Override
     public void add(TourRequest request) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime start = LocalDateTime.parse(request.getStartDate(), dateTimeFormatter);
+        LocalDateTime end = LocalDateTime.parse(request.getEndDate(), dateTimeFormatter);
+
+        if (start.isAfter(end)){
+            throw new BadRequestException(400, "Start date must be before End date");
+        }
+
+        if(request.getPrice() != null && request.getPrice() <= 0){
+            throw new BadRequestException(400, "Price must be gt 0");
+        }
+
+        if (request.getStock() != null && request.getStock() <= 0){
+            throw new BadRequestException(400, "Stock must be gt 0");
+        }
+
+
+
         Tour tour = new Tour();
         TourInfo tourInfo = tourInfoService.getDetail(request.getTourInfoId());
         tour.setTourInfo(tourInfo);
         tour.setCreateAt(LocalDate.now());
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//        LocalDateTime dateTime = LocalDateTime.parse(dateString, dateTimeFormatter);
 
-        tour.setStartDate(LocalDateTime.parse(request.getStartDate(), dateTimeFormatter));
-        tour.setEndDate(LocalDateTime.parse(request.getEndDate(), dateTimeFormatter));
+        tour.setStartDate(start);
+        tour.setEndDate(end);
         tour.setPrice(request.getPrice());
         tour.setStock(request.getStock());
         tourRepository.save(tour);
@@ -62,13 +84,31 @@ public class TourServiceImpl implements TourService {
         if (request.getTourInfoId() != null){
             tour.setTourInfo(tourInfoService.getDetail(request.getTourInfoId()));
         }
-//        DateTimeFormatter.ofPattern("dd-MM-yyyy hh:MM:ss")
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime start = tour.getStartDate();
+        LocalDateTime end = tour.getEndDate();
+
         if (request.getStartDate() != null){
-            tour.setStartDate(LocalDateTime.parse(request.getStartDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss")));
+            start = LocalDateTime.parse(request.getStartDate(), dateTimeFormatter);
         }
         if (request.getEndDate() != null){
-            tour.setEndDate(LocalDateTime.parse(request.getEndDate()));
+            end = LocalDateTime.parse(request.getEndDate(), dateTimeFormatter);
         }
+
+        if (start.isAfter(end)){
+            throw new BadRequestException(400, "Start date must be before End date");
+        }
+        tour.setStartDate(start);
+        tour.setEndDate(end);
+
+        if(request.getPrice() != null && request.getPrice() <= 0){
+            throw new BadRequestException(400, "Price must be gt 0");
+        }
+
+        if (request.getStock() != null && request.getStock() <= 0){
+            throw new BadRequestException(400, "Stock must be gt 0");
+        }
+
         if (request.getStock() != null){
             tour.setStock(request.getStock());
         }

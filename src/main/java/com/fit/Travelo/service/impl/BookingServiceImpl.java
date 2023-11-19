@@ -126,16 +126,6 @@ public class BookingServiceImpl implements BookingService {
             throw new NotFoundException(404, "Tour Id is not found");
         });
 
-        if (tour.getStock() < request.getNumberPerson())
-            throw new BadRequestException(400, "number person can not greater than stock");
-
-        tour.decreaseStock(request.getNumberPerson());
-        tourRepository.save(tour);
-
-
-//        String email = Authen.getEmail();
-//        Staff staff = staffRepository.findStaffByEmail(email);
-
         Staff staff = null;
         if (request.getStaffId() != null){
              staff = staffRepository.findById(request.getStaffId()).orElseThrow(()->{
@@ -143,12 +133,18 @@ public class BookingServiceImpl implements BookingService {
             });
         }
 
+        if (tour.getStock() < request.getNumberPerson())
+            throw new BadRequestException(400, "number person can not greater than stock");
+
+        tour.decreaseStock(request.getNumberPerson());
+        tourRepository.save(tour);
+
         Booking booking = new Booking();
         booking.setCustomer(customer);
         booking.setStaff(staff);
         booking.setTour(tour);
         booking.setNumberPerson(request.getNumberPerson());
-        booking.setStatus(EStatusBooking.NEW);
+        booking.setStatus(EStatusBooking.UNPAID);
         booking.setTotalPrice(booking.getTotalPrice());
         bookingRepository.save(booking);
     }
@@ -161,10 +157,6 @@ public class BookingServiceImpl implements BookingService {
         if (booking.getStatus() != EStatusBooking.NEW && booking.getStatus() != EStatusBooking.UNPAID)
             throw new ForbiddenException(404, booking.getStatus().name() + " Booking, can not update anything");
 
-        if (request.getNumberPerson() != null){
-            booking.setNumberPerson(request.getNumberPerson());
-        }
-
         if (request.getStatus() != null){
             booking.setStatus(request.getStatus());
         }
@@ -176,6 +168,10 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = bookingRepository.findById(id).orElseThrow(() -> {
             throw new NotFoundException(404, "Booking id is not found");
         });
+        Tour tour = booking.getTour();
+        tour.increaseStock(booking.getNumberPerson());
+        tourRepository.save(tour);
+
         booking.setStatus(EStatusBooking.CANCEL);
         bookingRepository.save(booking);
     }

@@ -17,11 +17,15 @@ import java.util.List;
 public class TourController {
     private final TourService tourService;
 
-    @GetMapping("")
+    @GetMapping("/get-all")
     public ResponseEntity<List<Tour>> getAll(){
         return ResponseEntity.ok(tourService.getList());
     }
 
+    @RequestMapping("")
+    public ResponseEntity<List<Tour>> getToursOnSale() {
+        return ResponseEntity.ok(tourService.getListOnSale());
+    }
     @GetMapping("/{id}")
     public ResponseEntity<Tour> getDetail(@PathVariable("id") Long id){
         return ResponseEntity.ok(tourService.getDetail(id));

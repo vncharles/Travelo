@@ -14,6 +14,8 @@ public interface StaffService {
 
     Staff getDetail(Long id);
 
+    Staff findByEmail(String email);
+
     void add(StaffRequest request);
 
     void update(Long id, StaffRequest request);
