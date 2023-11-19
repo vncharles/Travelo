@@ -5,7 +5,7 @@ import com.fit.Travelo.model.CustomerDTO;
 import com.fit.Travelo.model.request.CustomerRequest;
 import com.fit.Travelo.service.CustomerService;
 import com.fit.Travelo.utils.SuccessResponse;
-import io.swagger.models.Response;
+//import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
