@@ -5,18 +5,16 @@ import com.fit.Travelo.model.request.RegisterRequest;
 import com.fit.Travelo.model.response.JwtResponse;
 import com.fit.Travelo.model.response.MessageResponse;
 import com.fit.Travelo.service.UserService;
+import com.fit.Travelo.service.impl.EmailSenderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
 public class UserController {
     private final UserService userService;
+    private final EmailSenderService senderService;
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest login) {
@@ -30,4 +28,10 @@ public class UserController {
         return ResponseEntity.ok(new MessageResponse("Register success"));
     }
 
+    @GetMapping("/test-smtp")
+    public ResponseEntity<?> testEmail() {
+        senderService.sendEmail("tranquoctrong130202@gmail.com", "Test send mail", "This is message test send mail");
+
+        return ResponseEntity.ok(new MessageResponse("Send mail success"));
+    }
 }

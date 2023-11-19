@@ -13,6 +13,7 @@ import com.fit.Travelo.repository.StaffRepository;
 import com.fit.Travelo.repository.TourRepository;
 import com.fit.Travelo.service.BookingService;
 import com.fit.Travelo.utils.Authen;
+import com.fit.Travelo.utils.EmailTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ public class BookingServiceImpl implements BookingService {
     private final CustomerRepository customerRepository;
     private final StaffRepository staffRepository;
     private final TourRepository tourRepository;
+    private final EmailSenderService senderService;
     @Override
     public List<BookingDTO> getList() {
 
@@ -83,6 +85,8 @@ public class BookingServiceImpl implements BookingService {
         booking.setStatus(EStatusBooking.NEW);
         booking.setTotalPrice(booking.getTotalPrice());
         bookingRepository.save(booking);
+
+        senderService.sendEmail(booking.getCustomer().getEmail(), "Thông tin đặt tour Travelo", EmailTemplate.sendMailBooking(booking));
     }
 
     @Override

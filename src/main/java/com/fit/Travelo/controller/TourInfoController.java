@@ -1,5 +1,7 @@
 package com.fit.Travelo.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fit.Travelo.entity.TourInfo;
 import com.fit.Travelo.model.request.TourInfoRequest;
 import com.fit.Travelo.service.TourInfoService;
@@ -7,7 +9,9 @@ import com.fit.Travelo.utils.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -28,8 +32,15 @@ public class TourInfoController {
     }
 
     @PostMapping("")
-    public ResponseEntity<SuccessResponse> create(@RequestBody TourInfoRequest request){
-        tourInfoService.add(request);
+    public ResponseEntity<SuccessResponse> create(@RequestParam(value = "data", required = false) String data,
+                                                  @RequestParam("images") List<MultipartFile> image) throws IOException {
+        TourInfoRequest request = null;
+        if(data!=null) {
+            ObjectMapper mapper = new ObjectMapper();
+            request = mapper.readValue(data, TourInfoRequest.class);
+        } else request = new TourInfoRequest();
+
+        tourInfoService.add(request, image);
         return ResponseEntity.ok(new SuccessResponse("Create tour info is success"));
     }
 
