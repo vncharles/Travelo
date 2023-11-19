@@ -67,10 +67,16 @@ public class BookingServiceImpl implements BookingService {
                 customer = new Customer();
                 customer.setEmail(request.getEmail() != null ? request.getEmail() : null);
                 customer.setName(request.getName() != null ? request.getName() : null);
-                customer.setAddress(customer.getAddress() != null ? customer.getAddress() : null);
-                customer.setPhone(customer.getPhone() != null ? customer.getPhone() : null);
+                customer.setAddress(request.getAddress() != null ? request.getAddress() : null);
+                customer.setPhone(request.getPhone() != null ? request.getPhone() : null);
                 customerRepository.save(customer);
                 customer = customerRepository.findByEmail(request.getEmail());
+            }else {
+                customer.setName(request.getName() != null ? request.getName() : null);
+                customer.setAddress(request.getAddress() != null ? request.getAddress() : null);
+                customer.setPhone(request.getPhone() != null ? request.getPhone() : null);
+
+                customerRepository.save(customer);
             }
         }
         Tour tour = tourRepository.findById(request.getTourId()).orElseThrow(()->{
@@ -84,9 +90,10 @@ public class BookingServiceImpl implements BookingService {
         booking.setNumberPerson(request.getNumberPerson());
         booking.setStatus(EStatusBooking.NEW);
         booking.setTotalPrice(booking.getTotalPrice());
-        bookingRepository.save(booking);
 
-        senderService.sendEmail(booking.getCustomer().getEmail(), "Thông tin đặt tour Travelo", EmailTemplate.sendMailBooking(booking));
+        Booking newBooking = bookingRepository.save(booking);
+
+        if(newBooking!=null) senderService.sendEmail(booking.getCustomer().getEmail(), "Thông tin đặt tour Travelo", EmailTemplate.sendMailBooking(newBooking));
     }
 
     @Override
@@ -113,11 +120,17 @@ public class BookingServiceImpl implements BookingService {
                 customer = new Customer();
                 customer.setEmail(request.getEmail() != null ? request.getEmail() : null);
                 customer.setName(request.getName() != null ? request.getName() : null);
-                customer.setAddress(customer.getAddress() != null ? customer.getAddress() : null);
-                customer.setPhone(customer.getPhone() != null ? customer.getPhone() : null);
+                customer.setAddress(request.getAddress() != null ? request.getAddress() : null);
+                customer.setPhone(request.getPhone() != null ? request.getPhone() : null);
 
                 customerRepository.save(customer);
                 customer = customerRepository.findByEmail(request.getEmail());
+            } else {
+                customer.setName(request.getName() != null ? request.getName() : null);
+                customer.setAddress(request.getAddress() != null ? request.getAddress() : null);
+                customer.setPhone(request.getPhone() != null ? request.getPhone() : null);
+
+                customerRepository.save(customer);
             }
         }
         Tour tour = tourRepository.findById(request.getTourId()).orElseThrow(()->{
@@ -133,9 +146,6 @@ public class BookingServiceImpl implements BookingService {
                 throw new NotFoundException(404, "Staff Id is not found");
             });
         }
-
-
-
 
         Booking booking = new Booking();
         booking.setCustomer(customer);

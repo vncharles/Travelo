@@ -3,8 +3,20 @@ package com.fit.Travelo.utils;
 import com.fit.Travelo.entity.Booking;
 import com.fit.Travelo.model.BookingDTO;
 
+import java.text.NumberFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 public class EmailTemplate {
     public static String sendMailBooking(Booking booking) {
+        String[] parts = booking.getTour().getTourInfo().getItinerary().split("\\.");
+        String itinerary = String.join("<br>", parts);
+
+        // Tạo một đối tượng NumberFormat cho tiền tệ của Việt Nam
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
         return "<!DOCTYPE html>\n" +
                 "<html>\n" +
                 "<head>\n" +
@@ -50,12 +62,12 @@ public class EmailTemplate {
                 "\n" +
                 "        <tr>\n" +
                 "            <td><strong>Số người:</strong></td>\n" +
-                "            <td>2</td>\n" +
+                "            <td>"+booking.getNumberPerson()+"</td>\n" +
                 "        </tr>\n" +
                 "\n" +
                 "        <tr>\n" +
                 "            <td><strong>Ngày đặt:</strong></td>\n" +
-                "            <td>20/11/2022</td>\n" +
+                "            <td>"+booking.getCreatedAt()+"</td>\n" +
                 "        </tr>\n" +
                 "\n" +
                 "        <tr>\n" +
@@ -65,7 +77,7 @@ public class EmailTemplate {
                 "\n" +
                 "        <tr>\n" +
                 "            <td><strong>Tổng tiền:</strong></td>\n" +
-                "            <td>2,000,000 VND</td>\n" +
+                "            <td>"+currencyFormat.format(booking.getTotalPrice())+"</td>\n" +
                 "        </tr>\n" +
                 "\n" +
                 "        <tr>\n" +
@@ -74,22 +86,22 @@ public class EmailTemplate {
                 "\n" +
                 "        <tr>\n" +
                 "            <td><strong>Tên:</strong></td>\n" +
-                "            <td>Nguyễn Văn A</td>\n" +
+                "            <td>"+booking.getCustomer().getName()+"</td>\n" +
                 "        </tr>\n" +
                 "\n" +
                 "        <tr>\n" +
                 "            <td><strong>Email:</strong></td>\n" +
-                "            <td>nguyenvana@gmail.com</td>\n" +
+                "            <td>"+booking.getCustomer().getEmail()+"</td>\n" +
                 "        </tr>\n" +
                 "\n" +
                 "        <tr>\n" +
                 "            <td><strong>Điện thoại:</strong></td>\n" +
-                "            <td>0123456789</td>\n" +
+                "            <td>"+booking.getCustomer().getPhone()+"</td>\n" +
                 "        </tr>\n" +
                 "\n" +
                 "        <tr>\n" +
                 "            <td><strong>Địa chỉ:</strong></td>\n" +
-                "            <td>123 Đường C, Quận 9, TP HCM</td>\n" +
+                "            <td>"+booking.getCustomer().getAddress()+"</td>\n" +
                 "        </tr>\n" +
                 "\n" +
                 "        <tr>\n" +
@@ -98,41 +110,37 @@ public class EmailTemplate {
                 "\n" +
                 "        <tr>\n" +
                 "            <td><strong>Ngày bắt đầu:</strong></td>\n" +
-                "            <td>2023-02-01T08:00:00</td>\n" +
+                "            <td>"+formatter.format(booking.getTour().getStartDate())+"</td>\n" +
                 "        </tr>\n" +
                 "\n" +
                 "        <tr>\n" +
                 "            <td><strong>Ngày kết thúc:</strong></td>\n" +
-                "            <td>2023-02-01T08:00:00</td>\n" +
+                "            <td>"+formatter.format(booking.getTour().getEndDate())+"</td>\n" +
                 "        </tr>\n" +
                 "\n" +
                 "        <tr>\n" +
                 "            <td><strong>Giá:</strong></td>\n" +
-                "            <td>9000000</td>\n" +
+                "            <td>"+currencyFormat.format(booking.getTour().getPrice())+"</td>\n" +
                 "        </tr>\n" +
                 "\n" +
                 "        <tr>\n" +
-                "            <td><strong>Tên:</strong></td>\n" +
-                "            <td>Khám phá Vịnh Hạ Long và Quảng Ninh</td>\n" +
+                "            <td><strong>Tên tour:</strong></td>\n" +
+                "            <td>"+booking.getTour().getTourInfo().getName()+"</td>\n" +
                 "        </tr>\n" +
                 "\n" +
                 "        <tr>\n" +
                 "            <td><strong>Mô tả:</strong></td>\n" +
-                "            <td>25/11/2022</td>\n" +
+                "            <td>"+booking.getTour().getTourInfo().getDescription()+"</td>\n" +
                 "        </tr>\n" +
                 "\n" +
                 "        <tr>\n" +
                 "            <td><strong>Lịch trình:</strong></td>\n" +
-                "            <td>\n" +
-                "                07:30-12:00 Lịch trình 1<br>\n" +
-                "                07:30-12:00 Lịch trình 2<br>\n" +
-                "                07:30-12:00 Lịch trình 3<br>\n" +
-                "            </td>\n" +
+                "            <td> "+itinerary+" </td>\n" +
                 "        </tr>\n" +
                 "\n" +
                 "        <tr>\n" +
                 "            <td><strong>Địa điểm:</strong></td>\n" +
-                "            <td>Quảng Ninh</td>\n" +
+                "            <td>"+booking.getTour().getTourInfo().getLocation().getProvince()+"</td>\n" +
                 "        </tr>\n" +
                 "         \n" +
                 "    </table>\n" +
