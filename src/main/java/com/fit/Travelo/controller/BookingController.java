@@ -53,7 +53,7 @@ public class BookingController {
     }
 
     @GetMapping("/list-by-email")
-    public ResponseEntity<?> getListByEmail(){
-        return null;
+    public ResponseEntity<?> getListByEmail(@RequestParam("email")String email){
+        return ResponseEntity.ok(bookingService.getListByEmail(email));
     }
 }

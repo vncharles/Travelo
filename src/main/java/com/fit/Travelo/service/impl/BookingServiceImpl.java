@@ -16,6 +16,7 @@ import com.fit.Travelo.utils.Authen;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -77,6 +78,7 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = new Booking();
         booking.setCustomer(customer);
         booking.setTour(tour);
+        booking.setCreatedAt(LocalDate.now());
         booking.setNumberPerson(request.getNumberPerson());
         booking.setStatus(EStatusBooking.NEW);
         booking.setTotalPrice(booking.getTotalPrice());
@@ -166,5 +168,14 @@ public class BookingServiceImpl implements BookingService {
         });
         booking.setStatus(EStatusBooking.CANCEL);
         bookingRepository.save(booking);
+    }
+
+    @Override
+    public List<BookingDTO> getListByEmail(String email) {
+        List<Booking> list = bookingRepository.findByCustomer_EmailOrderByCreatedAtDesc(email);
+        return list.stream().map((booking) ->{
+            return BookingMapper.bookingToBookingDTO(booking);
+
+        }).toList();
     }
 }

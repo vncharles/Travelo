@@ -22,4 +22,6 @@ public interface BookingService {
     void update(Long id, BookingRequest request);
 
     void delete(Long id);
+
+    List<BookingDTO> getListByEmail(String email);
 }

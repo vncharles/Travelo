@@ -36,8 +36,7 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests(request -> request
                 .requestMatchers(HttpMethod.GET, "/staff/{id}").hasAnyAuthority(ERole.ROLE_ADMIN.name(), ERole.ROLE_STAFF.name())
                 .requestMatchers("/staff/**").hasAnyAuthority(ERole.ROLE_ADMIN.name())
-                .requestMatchers(HttpMethod.GET, "/booking/**").hasAnyAuthority(ERole.ROLE_STAFF.name(), ERole.ROLE_ADMIN.name())
-                .requestMatchers("/booking/list-by-email").permitAll()
+                .requestMatchers(HttpMethod.GET, "/booking/list-by-email").permitAll()
                 .requestMatchers("/booking/**").hasAnyAuthority(ERole.ROLE_STAFF.name(), ERole.ROLE_ADMIN.name())
                 .requestMatchers(HttpMethod.GET, "/customer/detail-person").hasAnyAuthority(ERole.ROLE_STAFF.name(), ERole.ROLE_ADMIN.name())
                 .requestMatchers("/customer/**").hasAnyAuthority(ERole.ROLE_STAFF.name(), ERole.ROLE_ADMIN.name())

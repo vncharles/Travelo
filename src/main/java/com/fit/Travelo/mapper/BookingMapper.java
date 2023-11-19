@@ -9,6 +9,7 @@ public class BookingMapper {
         return BookingDTO.builder()
                 .id(booking.getId())
                 .numberPerson(booking.getNumberPerson())
+                .createdAt(booking.getCreatedAt())
                 .status(booking.getStatus().name())
                 .totalPrice(booking.getTotalPrice())
                 .customer(CustomerMapper.customerToCustomerBookingResponse(booking.getCustomer()))

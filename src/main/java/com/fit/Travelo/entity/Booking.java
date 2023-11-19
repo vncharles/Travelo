@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "t_booking")
 @AllArgsConstructor
@@ -15,7 +18,7 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer numberPerson;
-
+    private LocalDate createdAt;
     @Enumerated(EnumType.STRING)
     private EStatusBooking status;
     private Double totalPrice;

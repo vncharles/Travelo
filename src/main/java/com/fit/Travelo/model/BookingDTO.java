@@ -8,12 +8,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data @Builder
 public class BookingDTO {
     private Long id;
     private Integer numberPerson;
+    private LocalDate createdAt;
     private String status;
     private Double totalPrice;
     private CustomerBookingRespone customer;
