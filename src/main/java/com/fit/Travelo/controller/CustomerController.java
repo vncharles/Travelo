@@ -1,9 +1,12 @@
 package com.fit.Travelo.controller;
 
 import com.fit.Travelo.entity.Customer;
+import com.fit.Travelo.mapper.CustomerMapper;
 import com.fit.Travelo.model.CustomerDTO;
 import com.fit.Travelo.model.request.CustomerRequest;
+import com.fit.Travelo.repository.CustomerRepository;
 import com.fit.Travelo.service.CustomerService;
+import com.fit.Travelo.utils.Authen;
 import com.fit.Travelo.utils.SuccessResponse;
 //import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
@@ -48,9 +51,11 @@ public class CustomerController {
         return ResponseEntity.ok(new SuccessResponse(("delete Customer is successful")));
     }
 
-    @GetMapping("/detail-person")
-    public ResponseEntity<?> getDetailPerson() {
-        return null;
+    @GetMapping("/current-customer")
+    public ResponseEntity<CustomerDTO> getDetailPerson() {
+        String email = Authen.getEmail();
+        Customer customer = customerService.getDetailByEmail(email);
+        return ResponseEntity.ok(CustomerMapper.customerToCustomerDTO(customer));
     }
 
 }

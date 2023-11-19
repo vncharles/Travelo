@@ -49,39 +49,38 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public void addByCustomer(BookingRequest request) {
-        Customer customer = null;
-        if(request.getCustomerId() != null) {
-            try {
-                customer = customerRepository.findById(request.getCustomerId()).get();
-            }catch (Exception e){
-                customer = null;
-            }
-        }
-        if (customer == null){
-            if (request.getEmail() == null || request.getName() == null){
-                throw new BadRequestException(400, "email and name need be required");
-            }
+        if (request.getNumberPerson() == null || request.getNumberPerson() <= 0)
+            throw new BadRequestException(400, "Number person must be required and greater than 0");
 
+
+        if (request.getEmail() == null || request.getName() == null){
+            throw new BadRequestException(400, "email and name need be required");
+        }
+
+        Customer customer = customerRepository.findByEmail(request.getEmail());
+        if (customer == null) {
+            customer = new Customer();
+            customer.setEmail(request.getEmail() != null ? request.getEmail() : null);
+            customer.setName(request.getName() != null ? request.getName() : null);
+            customer.setAddress(request.getAddress() != null ? request.getAddress() : null);
+            customer.setPhone(request.getPhone() != null ? request.getPhone() : null);
+            customerRepository.save(customer);
             customer = customerRepository.findByEmail(request.getEmail());
-            if (customer == null) {
-                customer = new Customer();
-                customer.setEmail(request.getEmail() != null ? request.getEmail() : null);
-                customer.setName(request.getName() != null ? request.getName() : null);
-                customer.setAddress(request.getAddress() != null ? request.getAddress() : null);
-                customer.setPhone(request.getPhone() != null ? request.getPhone() : null);
-                customerRepository.save(customer);
-                customer = customerRepository.findByEmail(request.getEmail());
-            }else {
-                customer.setName(request.getName() != null ? request.getName() : null);
-                customer.setAddress(request.getAddress() != null ? request.getAddress() : null);
-                customer.setPhone(request.getPhone() != null ? request.getPhone() : null);
+        }else {
+            customer.setName(request.getName() != null ? request.getName() : null);
+            customer.setAddress(request.getAddress() != null ? request.getAddress() : null);
+            customer.setPhone(request.getPhone() != null ? request.getPhone() : null);
 
-                customerRepository.save(customer);
-            }
+            customerRepository.save(customer);
         }
+
         Tour tour = tourRepository.findById(request.getTourId()).orElseThrow(()->{
             throw new NotFoundException(404, "Tour Id is not found");
         });
+        if (tour.getStock() < request.getNumberPerson())
+            throw new BadRequestException(400, "number person can not greater than stock");
+
+        tour.decreaseStock(request.getNumberPerson());
 
         Booking booking = new Booking();
         booking.setCustomer(customer);
@@ -101,41 +100,38 @@ public class BookingServiceImpl implements BookingService {
         if (request.getNumberPerson() == null || request.getNumberPerson() <= 0)
             throw new BadRequestException(400, "Number person must be required and greater than 0");
 
-        Customer customer = null;
-        if(request.getCustomerId() != null) {
-            try {
-                customer = customerRepository.findById(request.getCustomerId()).get();
-            }catch (Exception e){
-                customer = null;
-            }
+        if (request.getEmail() == null || request.getName() == null){
+            throw new BadRequestException(400, "email and name must be required");
         }
-        if (customer == null){
 
-            if (request.getEmail() == null || request.getName() == null){
-                throw new BadRequestException(400, "email and name must be required");
-            }
+        Customer customer = customerRepository.findByEmail(request.getEmail());
+        if (customer == null) {
+            customer = new Customer();
+            customer.setEmail(request.getEmail() != null ? request.getEmail() : null);
+            customer.setName(request.getName() != null ? request.getName() : null);
+            customer.setAddress(request.getAddress() != null ? request.getAddress() : null);
+            customer.setPhone(request.getPhone() != null ? request.getPhone() : null);
 
+            customerRepository.save(customer);
             customer = customerRepository.findByEmail(request.getEmail());
-            if (customer == null) {
-                customer = new Customer();
-                customer.setEmail(request.getEmail() != null ? request.getEmail() : null);
-                customer.setName(request.getName() != null ? request.getName() : null);
-                customer.setAddress(request.getAddress() != null ? request.getAddress() : null);
-                customer.setPhone(request.getPhone() != null ? request.getPhone() : null);
+        } else {
+            customer.setName(request.getName() != null ? request.getName() : null);
+            customer.setAddress(request.getAddress() != null ? request.getAddress() : null);
+            customer.setPhone(request.getPhone() != null ? request.getPhone() : null);
 
-                customerRepository.save(customer);
-                customer = customerRepository.findByEmail(request.getEmail());
-            } else {
-                customer.setName(request.getName() != null ? request.getName() : null);
-                customer.setAddress(request.getAddress() != null ? request.getAddress() : null);
-                customer.setPhone(request.getPhone() != null ? request.getPhone() : null);
-
-                customerRepository.save(customer);
-            }
+            customerRepository.save(customer);
         }
+
         Tour tour = tourRepository.findById(request.getTourId()).orElseThrow(()->{
             throw new NotFoundException(404, "Tour Id is not found");
         });
+
+        if (tour.getStock() < request.getNumberPerson())
+            throw new BadRequestException(400, "number person can not greater than stock");
+
+        tour.decreaseStock(request.getNumberPerson());
+        tourRepository.save(tour);
+
 
 //        String email = Authen.getEmail();
 //        Staff staff = staffRepository.findStaffByEmail(email);

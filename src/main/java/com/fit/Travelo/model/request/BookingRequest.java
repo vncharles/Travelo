@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 
 @Data
 public class BookingRequest {
-    private Long customerId;
     private String email;
     private String name;
     private String phone;
@@ -15,7 +14,5 @@ public class BookingRequest {
     private Long staffId;
     private Long tourId;
     private Integer numberPerson;
-//    private Double totalPrice;
-private LocalDateTime createdAt;
     private EStatusBooking status;
 }

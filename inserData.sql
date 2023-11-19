@@ -1,3 +1,9 @@
+INSERT INTO Role (name, description) values 
+('ROLE_ADMIN', 'admin'), 
+('ROLE_USER', 'user'), 
+('ROLE_STAFF', 'staff');
+
+
 INSERT INTO t_location (province, description) VALUES
 ('Hà Nội', 'Thủ đô nghìn năm văn hiến, với hệ thống di tích lịch sử và văn hóa phong phú.'),
 ('Hồ Chí Minh', 'Thành phố sôi động, nơi giao thoa văn hóa và kinh tế.'),

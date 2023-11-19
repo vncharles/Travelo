@@ -41,6 +41,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public Customer getDetailByEmail(String email) {
+        return customerRepository.findByEmail(email);
+
+    }
+
+    @Override
     public void add(CustomerRequest request) {
         if (request.getEmail() == null || request.getName() == null){
             throw new BadRequestException(400, "email and name need be required");

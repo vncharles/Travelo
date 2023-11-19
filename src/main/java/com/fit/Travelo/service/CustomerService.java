@@ -13,6 +13,8 @@ public interface CustomerService {
 
     Customer getDetail(Long id);
 
+    Customer getDetailByEmail(String email);
+
     void add(CustomerRequest request);
 
     void update(Long id, CustomerRequest request);
