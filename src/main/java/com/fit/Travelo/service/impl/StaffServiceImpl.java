@@ -1,10 +1,16 @@
 package com.fit.Travelo.service.impl;
 
+import com.fit.Travelo.entity.ERole;
+import com.fit.Travelo.entity.Role;
 import com.fit.Travelo.entity.Staff;
+import com.fit.Travelo.entity.User;
+import com.fit.Travelo.exception.BadRequestException;
 import com.fit.Travelo.exception.NotFoundException;
 import com.fit.Travelo.model.request.StaffRequest;
+import com.fit.Travelo.repository.RoleRepository;
 import com.fit.Travelo.repository.StaffRepository;
 import com.fit.Travelo.service.StaffService;
+import com.fit.Travelo.utils.BcryptUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StaffServiceImpl implements StaffService {
     private final StaffRepository staffRepository;
+    private final RoleRepository roleRepository;
     @Override
     public List<Staff> getList() {
         return staffRepository.findAll();
@@ -30,8 +37,21 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public void add(StaffRequest request) {
+        if(null==request.getName() || null==request.getEmail() ||
+            null==request.getPhone() || null==request.getPersonId() ||
+            null==request.getAddress() || null==request.getGender()) {
+            throw new BadRequestException(400, "Please input full info");
+        }
 
+        Role role = roleRepository.findByName(ERole.ROLE_USER).orElseThrow(()->{
+            throw new BadRequestException(400, "Role is not found!");
+        });
 
+        User user = User.builder()
+                .email(request.getEmail())
+                .password(BcryptUtils.hashPassword(request.getEmail()))
+                .role(role)
+                .build();
 
         Staff staff = new Staff();
         staff.setName(request.getName());
@@ -40,6 +60,7 @@ public class StaffServiceImpl implements StaffService {
         staff.setPersonId(request.getPersonId());
         staff.setAddress(request.getAddress());
         staff.setGender(request.getGender());
+        staff.setUser(user);
 
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         staff.setBirthday(LocalDate.parse(request.getBirthday(), format));
