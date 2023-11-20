@@ -33,16 +33,16 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer getDetail(Long id) {
+    public CustomerDTO getDetail(Long id) {
         Customer customer = customerRepository.findById(id).orElseThrow(() -> {
             throw new NotFoundException(404, "Customer Id is not found");
         });
-        return customer;
+        return CustomerMapper.customerToCustomerDTO(customer);
     }
 
     @Override
-    public Customer getDetailByEmail(String email) {
-        return customerRepository.findByEmail(email);
+    public CustomerDTO getDetailByEmail(String email) {
+        return CustomerMapper.customerToCustomerDTO(customerRepository.findByEmail(email));
 
     }
 

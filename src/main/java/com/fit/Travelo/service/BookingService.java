@@ -13,7 +13,7 @@ import java.util.List;
 public interface BookingService {
     List<BookingDTO> getList();
 
-    Booking getDetail(Long id);
+    BookingDTO getDetail(Long id);
 
     void addByCustomer(BookingRequest request);
 

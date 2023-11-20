@@ -23,7 +23,7 @@ public class BookingController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Booking> getDetail(@PathVariable("id") Long id){
+    public ResponseEntity<BookingDTO> getDetail(@PathVariable("id") Long id){
         return ResponseEntity.ok(bookingService.getDetail(id));
     }
 

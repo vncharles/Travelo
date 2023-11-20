@@ -40,11 +40,11 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking getDetail(Long id) {
+    public BookingDTO getDetail(Long id) {
         Booking booking = bookingRepository.findById(id).orElseThrow(() -> {
             throw new NotFoundException(404, "Booking id is not found");
         });
-        return booking;
+        return BookingMapper.bookingToBookingDTO(booking);
     }
 
     @Override

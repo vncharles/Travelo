@@ -3,6 +3,10 @@ INSERT INTO Role (name, description) values
 ('ROLE_USER', 'user'), 
 ('ROLE_STAFF', 'staff');
 
+INSERT INTO t_accout (active, email, password, role_id) values
+(true, 'admin@gmail.com', '$2a$10$J.22iiKQx2g.QcvYakQP/.grq/ouPl6iZaQfRSUF0ubrUw67JsvOy', 1);
+(true, 'staff1@mail.comm', '$2a$10$ks2E4mEb.4yxhk.L4NipAerpD621eyyqusiiaUFfIXVEO8HsTN2W.', 3);
+
 
 INSERT INTO t_location (province, description) VALUES
 ('Hà Nội', 'Thủ đô nghìn năm văn hiến, với hệ thống di tích lịch sử và văn hóa phong phú.'),

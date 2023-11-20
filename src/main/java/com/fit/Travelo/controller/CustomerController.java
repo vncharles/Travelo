@@ -28,7 +28,7 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Customer> getDetail(@PathVariable("id") Long id){
+    public ResponseEntity<CustomerDTO> getDetail(@PathVariable("id") Long id){
         return ResponseEntity.ok(customerService.getDetail(id));
     }
 
@@ -54,8 +54,8 @@ public class CustomerController {
     @GetMapping("/current-customer")
     public ResponseEntity<CustomerDTO> getDetailPerson() {
         String email = Authen.getEmail();
-        Customer customer = customerService.getDetailByEmail(email);
-        return ResponseEntity.ok(CustomerMapper.customerToCustomerDTO(customer));
+        CustomerDTO customer = customerService.getDetailByEmail(email);
+        return ResponseEntity.ok(customer);
     }
 
 }

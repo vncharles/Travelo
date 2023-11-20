@@ -11,9 +11,9 @@ import java.util.List;
 public interface CustomerService {
     List<CustomerDTO> getList();
 
-    Customer getDetail(Long id);
+    CustomerDTO getDetail(Long id);
 
-    Customer getDetailByEmail(String email);
+    CustomerDTO getDetailByEmail(String email);
 
     void add(CustomerRequest request);
 
