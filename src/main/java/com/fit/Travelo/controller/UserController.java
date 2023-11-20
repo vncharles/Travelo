@@ -2,6 +2,7 @@ package com.fit.Travelo.controller;
 
 import com.fit.Travelo.model.request.LoginRequest;
 import com.fit.Travelo.model.request.RegisterRequest;
+import com.fit.Travelo.model.request.ResetPasswordRequest;
 import com.fit.Travelo.model.response.JwtResponse;
 import com.fit.Travelo.model.response.MessageResponse;
 import com.fit.Travelo.service.UserService;
@@ -34,5 +35,12 @@ public class UserController {
         senderService.sendEmail("tranquoctrong130202@gmail.com", "Test send mail", "This is message test send mail");
 
         return ResponseEntity.ok(new MessageResponse("Send mail success"));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
+        userService.resetPassword(request);
+
+        return ResponseEntity.ok(new MessageResponse("Reset password is success!"));
     }
 }

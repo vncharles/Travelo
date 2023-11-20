@@ -7,12 +7,14 @@ import com.fit.Travelo.entity.User;
 import com.fit.Travelo.exception.BadRequestException;
 import com.fit.Travelo.exception.NotFoundException;
 import com.fit.Travelo.model.request.RegisterRequest;
+import com.fit.Travelo.model.request.ResetPasswordRequest;
 import com.fit.Travelo.model.response.JwtResponse;
 import com.fit.Travelo.repository.CustomerRepository;
 import com.fit.Travelo.repository.RoleRepository;
 import com.fit.Travelo.repository.UserRepository;
 import com.fit.Travelo.security.jwt.JwtService;
 import com.fit.Travelo.service.UserService;
+import com.fit.Travelo.utils.Authen;
 import com.fit.Travelo.utils.BcryptUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,6 +34,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public JwtResponse login(String email, String password) {
+        System.out.println("Email: " + email);
         if(!userRepository.existsByEmail(email)){
             throw new NotFoundException(404, "email has not existed");
         }
@@ -95,6 +98,17 @@ public class UserServiceImpl implements UserService {
         }
 
         customerRepository.save(customer);
+    }
+
+    @Override
+    public void resetPassword(ResetPasswordRequest request) {
+        User user = userRepository.findByEmail(Authen.getEmail()).get();
+
+        if(BcryptUtils.verifyPassword(request.getOldPassword(), user.getPassword())) {
+           user.setPassword(BcryptUtils.hashPassword(request.getNewPassword()));
+
+           userRepository.save(user);
+        } else throw new BadRequestException(400, "Incorrect old password");
     }
 
 
