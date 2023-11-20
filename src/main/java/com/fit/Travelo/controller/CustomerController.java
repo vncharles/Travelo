@@ -9,6 +9,7 @@ import com.fit.Travelo.service.CustomerService;
 import com.fit.Travelo.utils.Authen;
 import com.fit.Travelo.utils.SuccessResponse;
 //import io.swagger.models.Response;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,14 +34,14 @@ public class CustomerController {
     }
 
     @PostMapping("")
-    public ResponseEntity<SuccessResponse> create(@RequestBody CustomerRequest request){
+    public ResponseEntity<SuccessResponse> create(@RequestBody @Valid CustomerRequest request){
         customerService.add(request);
         return ResponseEntity.ok(new SuccessResponse(("create new customer is successful")));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<SuccessResponse> update(@PathVariable("id") Long id,
-                                                  @RequestBody CustomerRequest request){
+                                                  @RequestBody @Valid CustomerRequest request){
         customerService.update(id, request);
         return ResponseEntity.ok(new SuccessResponse(("update Customer is successful")));
     }

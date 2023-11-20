@@ -1,10 +1,11 @@
+
 INSERT INTO Role (name, description) values 
 ('ROLE_ADMIN', 'admin'), 
 ('ROLE_USER', 'user'), 
 ('ROLE_STAFF', 'staff');
 
-INSERT INTO t_accout (active, email, password, role_id) values
-(true, 'admin@gmail.com', '$2a$10$J.22iiKQx2g.QcvYakQP/.grq/ouPl6iZaQfRSUF0ubrUw67JsvOy', 1);
+INSERT INTO t_user (active, email, password, role_id) values
+(true, 'admin@gmail.com', '$2a$10$J.22iiKQx2g.QcvYakQP/.grq/ouPl6iZaQfRSUF0ubrUw67JsvOy', 1),
 (true, 'staff1@mail.comm', '$2a$10$ks2E4mEb.4yxhk.L4NipAerpD621eyyqusiiaUFfIXVEO8HsTN2W.', 3);
 
 

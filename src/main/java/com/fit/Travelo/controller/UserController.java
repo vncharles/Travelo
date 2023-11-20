@@ -6,6 +6,7 @@ import com.fit.Travelo.model.response.JwtResponse;
 import com.fit.Travelo.model.response.MessageResponse;
 import com.fit.Travelo.service.UserService;
 import com.fit.Travelo.service.impl.EmailSenderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest request) {
         userService.create(request);
 
         return ResponseEntity.ok(new MessageResponse("Register success"));
