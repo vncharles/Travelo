@@ -2,6 +2,7 @@ package com.fit.Travelo.service;
 
 import com.fit.Travelo.entity.ERole;
 import com.fit.Travelo.model.request.RegisterRequest;
+import com.fit.Travelo.model.request.ResetPasswordRequest;
 import com.fit.Travelo.model.response.JwtResponse;
 
 public interface UserService {
@@ -9,4 +10,5 @@ public interface UserService {
 
     void create(RegisterRequest registerRequest);
 
+    void resetPassword(ResetPasswordRequest request);
 }

@@ -34,6 +34,7 @@ public class SecurityConfiguration {
         http.cors(cors -> cors.disable());
         http.csrf(csrf -> csrf.disable());
         http.authorizeHttpRequests(request -> request
+                .requestMatchers("/reset-password").hasAnyAuthority(ERole.ROLE_ADMIN.name(), ERole.ROLE_STAFF.name(), ERole.ROLE_USER.name())
                 .requestMatchers(HttpMethod.GET, "/staff/{id}").hasAnyAuthority(ERole.ROLE_ADMIN.name(), ERole.ROLE_STAFF.name())
                 .requestMatchers("/staff/**").hasAnyAuthority(ERole.ROLE_ADMIN.name())
                 .requestMatchers(HttpMethod.GET, "/booking/list-by-email").permitAll()
