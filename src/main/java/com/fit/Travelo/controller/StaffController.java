@@ -4,6 +4,7 @@ import com.fit.Travelo.entity.Staff;
 import com.fit.Travelo.model.request.StaffRequest;
 import com.fit.Travelo.service.StaffService;
 import com.fit.Travelo.utils.SuccessResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class StaffController {
     }
 
     @PostMapping("")
-    public ResponseEntity<SuccessResponse> create(@RequestBody StaffRequest request){
+    public ResponseEntity<SuccessResponse> create(@RequestBody @Valid StaffRequest request){
         staffService.add(request);
         return ResponseEntity.ok(new SuccessResponse("create new staff is successful"));
 
@@ -35,7 +36,7 @@ public class StaffController {
 
     @PutMapping("/{id}")
     public ResponseEntity<SuccessResponse> update(@PathVariable("id") Long id,
-                                                  @RequestBody StaffRequest request){
+                                                  @RequestBody @Valid StaffRequest request){
 
         staffService.update(id, request);
         return ResponseEntity.ok(new SuccessResponse("update staff is successful"));
