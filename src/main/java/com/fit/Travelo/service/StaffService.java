@@ -1,6 +1,7 @@
 package com.fit.Travelo.service;
 
 import com.fit.Travelo.entity.Staff;
+import com.fit.Travelo.model.StaffDTO;
 import com.fit.Travelo.model.request.StaffRequest;
 import com.fit.Travelo.repository.StaffRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,9 +11,9 @@ import java.util.List;
 
 @Service
 public interface StaffService {
-    List<Staff> getList();
+    List<StaffDTO> getList();
 
-    Staff getDetail(Long id);
+    StaffDTO getDetail(Long id);
 
     Staff findByEmail(String email);
 

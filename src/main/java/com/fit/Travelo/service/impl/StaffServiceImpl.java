@@ -6,6 +6,8 @@ import com.fit.Travelo.entity.Staff;
 import com.fit.Travelo.entity.User;
 import com.fit.Travelo.exception.BadRequestException;
 import com.fit.Travelo.exception.NotFoundException;
+import com.fit.Travelo.mapper.StaffMapper;
+import com.fit.Travelo.model.StaffDTO;
 import com.fit.Travelo.model.request.StaffRequest;
 import com.fit.Travelo.repository.RoleRepository;
 import com.fit.Travelo.repository.StaffRepository;
@@ -17,22 +19,46 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class StaffServiceImpl implements StaffService {
     private final StaffRepository staffRepository;
     private final RoleRepository roleRepository;
     @Override
-    public List<Staff> getList() {
-        return staffRepository.findAll();
+    public List<StaffDTO> getList() {
+        List<Staff> staffList = staffRepository.findAll();
+
+        return staffList.stream().map(staff -> {
+            return StaffDTO.builder()
+                    .id(staff.getId())
+                    .name(staff.getName())
+                    .email(staff.getEmail())
+                    .phone(staff.getPhone())
+                    .personId(staff.getPersonId())
+                    .address(staff.getAddress())
+                    .gender(staff.getGender())
+                    .birthday(staff.getBirthday())
+                    .build();
+        }).collect(Collectors.toList());
     }
 
     @Override
-    public Staff getDetail(Long id) {
+    public StaffDTO getDetail(Long id) {
         Staff staff = staffRepository.findById(id).orElseThrow(()->{
             throw new NotFoundException(404, "Staff ID is not found");
         });
-        return staff;
+        return StaffDTO.builder()
+                .id(staff.getId())
+                .name(staff.getName())
+                .email(staff.getEmail())
+                .phone(staff.getPhone())
+                .personId(staff.getPersonId())
+                .address(staff.getAddress())
+                .gender(staff.getGender())
+                .birthday(staff.getBirthday())
+                .build();
     }
 
     @Override
@@ -68,7 +94,7 @@ public class StaffServiceImpl implements StaffService {
         staff.setUser(user);
 
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        staff.setBirthday(LocalDate.parse(request.getBirthday(), format));
+        staff.setBirthday(request.getBirthday());
 
         staffRepository.save(staff);
     }
@@ -98,7 +124,7 @@ public class StaffServiceImpl implements StaffService {
         }
         if (request.getBirthday() != null){
             DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            staff.setBirthday(LocalDate.parse(request.getBirthday(), format));
+            staff.setBirthday(request.getBirthday());
         }
         staffRepository.save(staff);
     }
