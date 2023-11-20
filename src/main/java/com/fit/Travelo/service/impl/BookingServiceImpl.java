@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -49,6 +50,21 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public void addByCustomer(BookingRequest request) {
+
+        if (request.getTourId() == null){
+            throw new BadRequestException(400, "TourId must be required");
+        }
+
+        Tour tour = tourRepository.findById(request.getTourId()).orElseThrow(()->{
+            throw new NotFoundException(404, "Tour Id is not found");
+        });
+
+        if (!tourRepository.existsByIdAndStartDateAfter(request.getTourId(), LocalDateTime.now())){
+            throw new BadRequestException(400, "Tour is not current on sale");
+        }
+
+
+
         if (request.getNumberPerson() == null || request.getNumberPerson() <= 0)
             throw new BadRequestException(400, "Number person must be required and greater than 0");
 
@@ -74,9 +90,7 @@ public class BookingServiceImpl implements BookingService {
             customerRepository.save(customer);
         }
 
-        Tour tour = tourRepository.findById(request.getTourId()).orElseThrow(()->{
-            throw new NotFoundException(404, "Tour Id is not found");
-        });
+
         if (tour.getStock() < request.getNumberPerson())
             throw new BadRequestException(400, "number person can not greater than stock");
 

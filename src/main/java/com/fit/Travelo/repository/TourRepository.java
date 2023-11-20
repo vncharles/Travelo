@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface TourRepository extends JpaRepository<Tour, Long> {
     List<Tour> findAllByStartDateAfter(LocalDateTime currentDate);
+
+    boolean existsByIdAndStartDateAfter(Long id, LocalDateTime currentDate);
 }
