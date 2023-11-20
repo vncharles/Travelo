@@ -34,4 +34,5 @@ public class UserController {
 
         return ResponseEntity.ok(new MessageResponse("Send mail success"));
     }
+
 }
