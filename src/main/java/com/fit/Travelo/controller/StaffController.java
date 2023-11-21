@@ -32,14 +32,14 @@ public class StaffController {
     }
 
     @PostMapping("")
-    public ResponseEntity<SuccessResponse> create(@Valid @RequestBody StaffRequest request){
+    public ResponseEntity<SuccessResponse> create(@RequestBody StaffRequest request){
         staffService.add(request);
         return ResponseEntity.ok(new SuccessResponse("create new staff is successful"));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<SuccessResponse> update(@PathVariable("id") Long id,
-                                                  @Valid @RequestBody StaffRequest request){
+                                                  @RequestBody StaffRequest request){
         staffService.update(id, request);
         return ResponseEntity.ok(new SuccessResponse("update staff is successful"));
     }

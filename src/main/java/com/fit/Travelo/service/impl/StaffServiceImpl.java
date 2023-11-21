@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -76,6 +78,25 @@ public class StaffServiceImpl implements StaffService {
             throw new BadRequestException(400, "Please input full info");
         }
 
+        String emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        Pattern pattern = Pattern.compile(emailPattern);
+        Matcher matcher = pattern.matcher(request.getEmail());
+        if (!matcher.matches()) {
+            throw new BadRequestException(400, "Email sai định dạng!");
+        }
+
+        pattern = Pattern.compile("^(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})$");
+        matcher = pattern.matcher(request.getPhone());
+        if(!matcher.matches()) {
+            throw new BadRequestException(400, "Số điện thoại sai định dạng");
+        }
+
+        pattern = Pattern.compile("^\\d{9,12}$");
+        matcher = pattern.matcher(request.getPersonId());
+        if(!matcher.matches()) {
+            throw new BadRequestException(400, "Căn cước công dân sai định dạng");
+        }
+
         Role role = roleRepository.findByName(ERole.ROLE_STAFF).orElseThrow(()->{
             throw new BadRequestException(400, "Role is not found!");
         });
@@ -108,13 +129,19 @@ public class StaffServiceImpl implements StaffService {
         if (request.getName() != null){
             staff.setName(request.getName());
         }
-        if (request.getEmail() != null){
-            staff.setEmail(request.getEmail());
-        }
         if (request.getPhone() != null){
+            Pattern pattern = Pattern.compile("^(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})$");
+            Matcher matcher = pattern.matcher(request.getPhone());
+            if(!matcher.matches()) {
+                throw new BadRequestException(400, "Số điện thoại sai định dạng");
+            }
+
             staff.setPhone(request.getPhone());
         }
         if (request.getPersonId() != null){
+            if(request.getPersonId().length()!=12) {
+                throw new BadRequestException(400, "Căn cước công dân sai định dạng");
+            }
             staff.setPersonId(request.getPersonId());
         }
         if (request.getAddress() != null){

@@ -29,7 +29,7 @@ public class BookingController {
     }
 
     @PostMapping
-    public ResponseEntity<SuccessResponse> customerCreate(@RequestBody @Valid BookingRequest request){
+    public ResponseEntity<SuccessResponse> customerCreate(@RequestBody BookingRequest request){
         bookingService.addByCustomer(request);
         return ResponseEntity.ok(new SuccessResponse("Create Booking is success"));
     }

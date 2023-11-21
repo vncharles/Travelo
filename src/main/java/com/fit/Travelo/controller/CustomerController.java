@@ -34,7 +34,7 @@ public class CustomerController {
     }
 
     @PostMapping("")
-    public ResponseEntity<SuccessResponse> create(@RequestBody @Valid CustomerRequest request){
+    public ResponseEntity<SuccessResponse> create(@RequestBody CustomerRequest request){
         customerService.add(request);
         return ResponseEntity.ok(new SuccessResponse(("create new customer is successful")));
     }

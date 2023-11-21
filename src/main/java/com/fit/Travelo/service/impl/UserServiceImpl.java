@@ -20,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,6 +37,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public JwtResponse login(String email, String password) {
         System.out.println("Email: " + email);
+        String emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        Pattern pattern = Pattern.compile(emailPattern);
+        Matcher matcher = pattern.matcher(email);
+        if (!matcher.matches()) {
+            throw new BadRequestException(400, "Email sai định dạng!");
+        }
+
         if(!userRepository.existsByEmail(email)){
             throw new NotFoundException(404, "email has not existed");
         }
@@ -58,6 +67,13 @@ public class UserServiceImpl implements UserService {
     public void create(RegisterRequest request) {
         if(request.getEmail()==null || request.getPassword()==null || request.getName()==null || request.getPhone()==null) {
             throw new BadRequestException(400, "Please input full info");
+        }
+
+        String emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        Pattern pattern = Pattern.compile(emailPattern);
+        Matcher matcher = pattern.matcher(request.getEmail());
+        if (!matcher.matches()) {
+            throw new BadRequestException(400, "Email sai định dạng!");
         }
 
         if(userRepository.existsByEmail(request.getEmail())) {

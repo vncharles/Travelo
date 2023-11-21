@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
@@ -73,6 +75,19 @@ public class BookingServiceImpl implements BookingService {
             throw new BadRequestException(400, "email and name need be required");
         }
 
+        String emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        Pattern pattern = Pattern.compile(emailPattern);
+        Matcher matcher = pattern.matcher(request.getEmail());
+        if (!matcher.matches()) {
+            throw new BadRequestException(400, "Email sai định dạng!");
+        }
+
+        pattern = Pattern.compile("^(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})$");
+        matcher = pattern.matcher(request.getPhone());
+        if(!matcher.matches()) {
+            throw new BadRequestException(400, "Số điện thoại sai định dạng");
+        }
+
         Customer customer = customerRepository.findByEmail(request.getEmail());
         if (customer == null) {
             customer = new Customer();
@@ -118,6 +133,19 @@ public class BookingServiceImpl implements BookingService {
             throw new BadRequestException(400, "email and name must be required");
         }
 
+        String emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        Pattern pattern = Pattern.compile(emailPattern);
+        Matcher matcher = pattern.matcher(request.getEmail());
+        if (!matcher.matches()) {
+            throw new BadRequestException(400, "Email sai định dạng!");
+        }
+
+        pattern = Pattern.compile("^(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})$");
+        matcher = pattern.matcher(request.getPhone());
+        if(!matcher.matches()) {
+            throw new BadRequestException(400, "Số điện thoại sai định dạng");
+        }
+
         Customer customer = customerRepository.findByEmail(request.getEmail());
         if (customer == null) {
             customer = new Customer();
@@ -145,8 +173,9 @@ public class BookingServiceImpl implements BookingService {
         if (tour.getStock() < request.getNumberPerson())
             throw new BadRequestException(400, "number person can not greater than stock");
 
-        tour.decreaseStock(request.getNumberPerson());
-        tourRepository.save(tour);
+        tour.setStock(tour.getStock()-request.getNumberPerson());
+        System.out.println("Stock: " + tour.getStock());
+        tourRepository.saveAndFlush(tour);
 
         Booking booking = new Booking();
         booking.setCustomer(customer);
@@ -177,7 +206,15 @@ public class BookingServiceImpl implements BookingService {
         }
 
         Customer customer = booking.getCustomer();
-        if(request.getPhone()!=null) customer.setPhone(request.getPhone());
+        if(request.getPhone()!=null) {
+            Pattern pattern = Pattern.compile("^(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})$");
+            Matcher matcher = pattern.matcher(request.getPhone());
+            if(!matcher.matches()) {
+                throw new BadRequestException(400, "Số điện thoại sai định dạng");
+            }
+
+            customer.setPhone(request.getPhone());
+        }
         if(request.getName()!=null) customer.setName(request.getName());
         if(request.getAddress()!=null) customer.setAddress(request.getAddress());
 

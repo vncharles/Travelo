@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -71,6 +73,12 @@ public class CustomerServiceImpl implements CustomerService {
             customer.setEmail(request.getEmail());
         }
         if (request.getPhone() != null){
+            Pattern pattern = Pattern.compile("^(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})$");
+            Matcher matcher = pattern.matcher(request.getPhone());
+            if(!matcher.matches()) {
+                throw new BadRequestException(400, "Số điện thoại sai định dạng");
+            }
+
             customer.setPhone(request.getPhone());
         }
         if (request.getAddress() != null){
