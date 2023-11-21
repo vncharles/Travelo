@@ -52,7 +52,7 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.GET, "/booking/list-by-email").permitAll()
                 .requestMatchers(HttpMethod.POST, "/booking").permitAll()
                 .requestMatchers("/booking/**").hasAnyAuthority(ERole.ROLE_STAFF.name(), ERole.ROLE_ADMIN.name())
-                .requestMatchers(HttpMethod.GET, "/customer/detail-person").hasAnyAuthority(ERole.ROLE_STAFF.name(), ERole.ROLE_ADMIN.name())
+                .requestMatchers(HttpMethod.GET, "/customer/detail-person").hasAnyAuthority(ERole.ROLE_USER.name())
                 .requestMatchers("/customer/**").hasAnyAuthority(ERole.ROLE_STAFF.name(), ERole.ROLE_ADMIN.name())
                 .requestMatchers(HttpMethod.GET, "/location", "/location/{id}").permitAll()
                 .requestMatchers("/location/**").hasAnyAuthority(ERole.ROLE_STAFF.name(), ERole.ROLE_ADMIN.name())
