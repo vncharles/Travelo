@@ -140,12 +140,7 @@ public class BookingServiceImpl implements BookingService {
             throw new NotFoundException(404, "Tour Id is not found");
         });
 
-        Staff staff = null;
-        if (request.getStaffId() != null){
-             staff = staffRepository.findById(request.getStaffId()).orElseThrow(()->{
-                throw new NotFoundException(404, "Staff Id is not found");
-            });
-        }
+        Staff staff = staffRepository.findStaffByEmail(Authen.getEmail());
 
         if (tour.getStock() < request.getNumberPerson())
             throw new BadRequestException(400, "number person can not greater than stock");
@@ -175,6 +170,8 @@ public class BookingServiceImpl implements BookingService {
             throw new ForbiddenException(404, booking.getStatus().name() + " Booking, can not update anything");
 
         if (request.getStatus() != null){
+            Staff staff = staffRepository.findStaffByEmail(Authen.getEmail());
+            booking.setStaff(staff);
             booking.setStatus(request.getStatus());
         }
         bookingRepository.save(booking);

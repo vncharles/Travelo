@@ -16,12 +16,9 @@ public class BookingRequest {
     private String email;
     @Size(min = 1, max = 100, message = "Full name must be between 1 and 100 characters")
     @NotBlank(message = "Full name is required")
-    @JsonAlias("full_name")
-    @Pattern(regexp = "^[a-zA-Z ]+$", message = "Input must contain only alphabetic characters (A-Z, a-z) and spaces.")
     private String name;
     private String phone;
     private String address;
-    private Long staffId;
     private Long tourId;
     private Integer numberPerson;
     private EStatusBooking status;
