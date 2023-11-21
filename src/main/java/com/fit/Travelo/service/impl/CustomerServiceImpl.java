@@ -39,13 +39,15 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerRepository.findById(id).orElseThrow(() -> {
             throw new NotFoundException(404, "Customer Id is not found");
         });
-        customer.setBookings(bookingRepository.findAllByCustomer(customer.getId()));
+
         return CustomerMapper.customerToCustomerDTO(customer);
     }
 
     @Override
     public CustomerDTO getDetailByEmail(String email) {
-        return CustomerMapper.customerToCustomerDTO(customerRepository.findByEmail(email));
+        Customer customer = customerRepository.findByEmail(email);
+        customer.setBookings(bookingRepository.findAllByCustomer(customer.getId()));
+        return CustomerMapper.customerToCustomerDTO(customer);
 
     }
 
