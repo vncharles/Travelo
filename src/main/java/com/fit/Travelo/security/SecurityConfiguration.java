@@ -58,6 +58,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/location/**").hasAnyAuthority(ERole.ROLE_STAFF.name(), ERole.ROLE_ADMIN.name())
                 .requestMatchers(HttpMethod.GET, "/tour", "/tour/{id}").permitAll()
                 .requestMatchers("/tour/**").hasAnyAuthority(ERole.ROLE_STAFF.name(), ERole.ROLE_ADMIN.name())
+                .requestMatchers(HttpMethod.GET, "/tour-info", "/tour-info/{id}").permitAll()
                 .requestMatchers("/tour-info/**").hasAnyAuthority(ERole.ROLE_STAFF.name(), ERole.ROLE_ADMIN.name())
                 .requestMatchers("/**").permitAll()
                .anyRequest().authenticated()
