@@ -11,9 +11,11 @@ import com.fit.Travelo.model.StaffDTO;
 import com.fit.Travelo.model.request.StaffRequest;
 import com.fit.Travelo.repository.RoleRepository;
 import com.fit.Travelo.repository.StaffRepository;
+import com.fit.Travelo.repository.UserRepository;
 import com.fit.Travelo.service.StaffService;
 import com.fit.Travelo.utils.BcryptUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -28,6 +30,7 @@ import java.util.stream.Collectors;
 public class StaffServiceImpl implements StaffService {
     private final StaffRepository staffRepository;
     private final RoleRepository roleRepository;
+    private final UserRepository userRepository;
     @Override
     public List<StaffDTO> getList() {
         List<Staff> staffList = staffRepository.findAll();
@@ -163,6 +166,19 @@ public class StaffServiceImpl implements StaffService {
             throw new NotFoundException(404, "Staff Id is not found");
         });
         staff.setStatusWorking(false);
+        staff.setUser(null);
         staffRepository.save(staff);
+
+        try {
+            User user = userRepository.findByEmail(staff.getEmail()).get();
+            user.setActive(false);
+
+            userRepository.delete(user);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+
+
     }
 }
