@@ -21,5 +21,5 @@ public class BookingRequest {
     private String address;
     private Long tourId;
     private Integer numberPerson;
-    private EStatusBooking status;
+    private String status;
 }

@@ -172,7 +172,7 @@ public class BookingServiceImpl implements BookingService {
         if (request.getStatus() != null){
             Staff staff = staffRepository.findStaffByEmail(Authen.getEmail());
             booking.setStaff(staff);
-            booking.setStatus(request.getStatus());
+            booking.setStatus(EStatusBooking.valueOf(request.getStatus()));
         }
         bookingRepository.save(booking);
     }
