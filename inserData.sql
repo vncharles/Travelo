@@ -358,3 +358,5 @@ select id, customer_id from t_booking;
 
 UPDATE t_staff SET status_working = true where id>0;
 
+UPDATE t_tour_info SET status = true where id>0;
+
