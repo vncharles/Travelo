@@ -39,7 +39,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerRepository.findById(id).orElseThrow(() -> {
             throw new NotFoundException(404, "Customer Id is not found");
         });
-        customer.setBookings(bookingRepository.findByCustomer(customer));
+        customer.setBookings(bookingRepository.findAllByCustomer(customer.getId()));
         return CustomerMapper.customerToCustomerDTO(customer);
     }
 
