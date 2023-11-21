@@ -1,3 +1,5 @@
+use `travelo-app`;
+
 
 INSERT INTO Role (name, description) values 
 ('ROLE_ADMIN', 'admin'), 
@@ -353,4 +355,6 @@ update t_booking set created_at = current_date() where id > 0;
 
 insert into t_customer_bookings(bookings_id,customer_id)
 select id, customer_id from t_booking;
+
+UPDATE t_staff SET status_working = true where id>0;
 
