@@ -12,17 +12,15 @@ import java.util.stream.Collectors;
 
 public class CustomerMapper {
     public static CustomerDTO customerToCustomerDTO(Customer customer) {
-        List<BookingCustomerResponse> bookings = customer.getBookings().stream().map((booking -> {
-            return BookingCustomerResponse.builder()
+        List<BookingCustomerResponse> bookings = customer.getBookings().stream().map((booking ->  BookingCustomerResponse.builder()
                     .id(booking.getId())
                     .numberPerson(booking.getNumberPerson())
                     .status(booking.getStatus().name())
                     .totalPrice(booking.getTotalPrice())
                     .staff(booking.getStaff())
                     .tour(toTourCustomerResponse(booking.getTour()))
-
-                    .build();
-        })).collect(Collectors.toList());
+                    .build()
+        )).collect(Collectors.toList());
 
         return CustomerDTO.builder()
                 .id(customer.getId())
