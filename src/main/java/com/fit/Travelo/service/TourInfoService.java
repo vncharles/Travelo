@@ -18,7 +18,7 @@ public interface TourInfoService {
 
     void add(TourInfoRequest request, List<MultipartFile> images) throws IOException;
 
-    void update(Long id, TourInfoRequest request);
+    void update(Long id, TourInfoRequest request, List<MultipartFile> images) throws IOException;
 
     void delete(Long id);
 }

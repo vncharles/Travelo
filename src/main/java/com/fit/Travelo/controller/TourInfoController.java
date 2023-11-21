@@ -46,8 +46,16 @@ public class TourInfoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<SuccessResponse> update(@PathVariable("id") Long id,
-                                                  @RequestBody TourInfoRequest request){
-        tourInfoService.update(id, request);
+                                                  @RequestParam(value = "data", required = false) String data,
+                                                  @RequestParam(value = "images", required = false) List<MultipartFile> image) throws IOException {
+        TourInfoRequest request = null;
+        if(data!=null) {
+            ObjectMapper mapper = new ObjectMapper();
+            request = mapper.readValue(data, TourInfoRequest.class);
+        } else request = new TourInfoRequest();
+
+        tourInfoService.update(id, request, image);
+
         return ResponseEntity.ok(new SuccessResponse("Update tour info is success"));
     }
 

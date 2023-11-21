@@ -160,7 +160,10 @@ public class BookingServiceImpl implements BookingService {
         booking.setNumberPerson(request.getNumberPerson());
         booking.setStatus(EStatusBooking.UNPAID);
         booking.setTotalPrice(booking.getTotalPrice());
-        bookingRepository.save(booking);
+
+        Booking newBooking = bookingRepository.save(booking);
+
+        if(newBooking!=null) senderService.sendEmail(booking.getCustomer().getEmail(), "Thông tin đặt tour Travelo", EmailTemplate.sendMailBooking(newBooking));
     }
     @Override
     public void update(Long id, BookingRequest request) {

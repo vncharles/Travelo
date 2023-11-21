@@ -11,5 +11,6 @@ public class TourInfoRequest {
     private String name;
     private String description;
     private Double price;
+    private String itinerary;
     private Long locationId;
 }

@@ -25,6 +25,7 @@ public class TourInfo {
     private Double price;
     @Column(length = 10000)
     private String itinerary;
+    private Boolean status;
 
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

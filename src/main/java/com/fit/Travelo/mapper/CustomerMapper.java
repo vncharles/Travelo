@@ -51,6 +51,7 @@ public class CustomerMapper {
         return  CustomerBookingRespone.builder()
                 .id(customer.getId())
                 .name(customer.getName())
+                .phone(customer.getPhone())
                 .email(customer.getEmail())
                 .address(customer.getAddress())
                 .build();

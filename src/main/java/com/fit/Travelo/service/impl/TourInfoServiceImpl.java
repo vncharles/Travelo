@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class TourInfoServiceImpl implements TourInfoService {
 
     @Override
     public List<TourInfo> getList() {
-        return tourInfoRepository.findAll();
+        return tourInfoRepository.findAllByStatusIsTrue();
     }
 
     @Override
@@ -48,9 +49,13 @@ public class TourInfoServiceImpl implements TourInfoService {
         });
 
         TourInfo tourInfo = new TourInfo();
-        tourInfo.setDescription(request.getDescription() != null ? request.getDescription() :  null);
-        tourInfo.setName(request.getName() != null ? request.getName() :  null);
+        tourInfo.setDescription(request.getDescription());
+        tourInfo.setName(request.getName());
         tourInfo.setLocation(location);
+        tourInfo.setItinerary(request.getItinerary());
+        tourInfo.setPrice(request.getPrice());
+        tourInfo.setCreateAt(LocalDate.now());
+        tourInfo.setStatus(true);
 
         List<Image> imageList = new ArrayList<>();
 
@@ -69,7 +74,7 @@ public class TourInfoServiceImpl implements TourInfoService {
     }
 
     @Override
-    public void update(Long id, TourInfoRequest request) {
+    public void update(Long id, TourInfoRequest request, List<MultipartFile> images) throws IOException {
         TourInfo tourInfo = tourInfoRepository.findById(id).orElseThrow(()->{
             throw new NotFoundException(404, "TourInfo ID is not found");
         });
@@ -90,6 +95,23 @@ public class TourInfoServiceImpl implements TourInfoService {
             Location location = locationRepository.findById(request.getLocationId()).get();
             tourInfo.setLocation(location);
         }
+        if(request.getItinerary()!=null) {
+            tourInfo.setItinerary(request.getItinerary());
+        }
+
+        List<Image> imageList = tourInfo.getImages();
+        if(imageList==null) imageList = new ArrayList<>();
+        if (images != null) {
+            for(MultipartFile image: images) {
+                Image newImage = new Image();
+                newImage.setTourInfo(tourInfo);
+                newImage.setImageUri(pathImage + ImageService.saveImage("images/", image));
+
+                imageList.add(newImage);
+            }
+
+        }
+        tourInfo.setImages(imageList);
 
         tourInfoRepository.save(tourInfo);
 
@@ -100,6 +122,7 @@ public class TourInfoServiceImpl implements TourInfoService {
         TourInfo tourInfo = tourInfoRepository.findById(id).orElseThrow(() -> {
             throw new NotFoundException(404, "TourInfo ID is not found");
         });
-        tourInfoRepository.delete(tourInfo);
+        tourInfo.setStatus(false);
+        tourInfoRepository.save(tourInfo);
     }
 }
