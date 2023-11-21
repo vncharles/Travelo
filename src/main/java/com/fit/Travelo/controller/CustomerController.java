@@ -52,7 +52,7 @@ public class CustomerController {
         return ResponseEntity.ok(new SuccessResponse(("delete Customer is successful")));
     }
 
-    @GetMapping("/current-customer")
+    @GetMapping("/detail-person")
     public ResponseEntity<CustomerDTO> getDetailPerson() {
         String email = Authen.getEmail();
         CustomerDTO customer = customerService.getDetailByEmail(email);

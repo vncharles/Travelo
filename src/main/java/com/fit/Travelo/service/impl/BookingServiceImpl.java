@@ -175,6 +175,13 @@ public class BookingServiceImpl implements BookingService {
             booking.setStaff(staff);
             booking.setStatus(EStatusBooking.valueOf(request.getStatus()));
         }
+
+        Customer customer = booking.getCustomer();
+        if(request.getPhone()!=null) customer.setPhone(request.getPhone());
+        if(request.getName()!=null) customer.setName(request.getName());
+        if(request.getAddress()!=null) customer.setAddress(request.getAddress());
+
+        customerRepository.save(customer);
         bookingRepository.save(booking);
     }
 
