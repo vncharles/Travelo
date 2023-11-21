@@ -40,6 +40,7 @@ public class StaffServiceImpl implements StaffService {
                     .address(staff.getAddress())
                     .gender(staff.getGender())
                     .birthday(staff.getBirthday())
+                    .statusWorking(staff.getStatusWorking())
                     .build();
         }).collect(Collectors.toList());
     }
@@ -58,6 +59,7 @@ public class StaffServiceImpl implements StaffService {
                 .address(staff.getAddress())
                 .gender(staff.getGender())
                 .birthday(staff.getBirthday())
+                .statusWorking(staff.getStatusWorking())
                 .build();
     }
 
@@ -91,9 +93,8 @@ public class StaffServiceImpl implements StaffService {
         staff.setPersonId(request.getPersonId());
         staff.setAddress(request.getAddress());
         staff.setGender(request.getGender());
+        staff.setStatusWorking(true);
         staff.setUser(user);
-
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         staff.setBirthday(request.getBirthday());
 
         staffRepository.save(staff);
@@ -134,6 +135,7 @@ public class StaffServiceImpl implements StaffService {
         Staff staff = staffRepository.findById(id).orElseThrow(() -> {
             throw new NotFoundException(404, "Staff Id is not found");
         });
-        staffRepository.delete(staff);
+        staff.setStatusWorking(false);
+        staffRepository.save(staff);
     }
 }

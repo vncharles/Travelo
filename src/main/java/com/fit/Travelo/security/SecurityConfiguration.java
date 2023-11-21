@@ -42,25 +42,6 @@ public class SecurityConfiguration {
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setExposedHeaders(List.of("Authorization"));
 
-//        http.cors().configurationSource(request -> corsConfiguration).and().csrf().disable()
-//                .authorizeRequests(request->request
-//                    .requestMatchers("/reset-password").hasAnyAuthority(ERole.ROLE_ADMIN.name(), ERole.ROLE_STAFF.name(), ERole.ROLE_USER.name())
-//                    .requestMatchers(HttpMethod.GET, "/staff/{id}").hasAnyAuthority(ERole.ROLE_ADMIN.name(), ERole.ROLE_STAFF.name())
-//                    .requestMatchers("/staff/**").hasAnyAuthority(ERole.ROLE_ADMIN.name())
-//                    .requestMatchers(HttpMethod.GET, "/booking/list-by-email").permitAll()
-//                    .requestMatchers(HttpMethod.POST, "/booking").permitAll()
-//                    .requestMatchers("/booking/**").hasAnyAuthority(ERole.ROLE_STAFF.name(), ERole.ROLE_ADMIN.name())
-//                    .requestMatchers(HttpMethod.GET, "/customer/detail-person").hasAnyAuthority(ERole.ROLE_STAFF.name(), ERole.ROLE_ADMIN.name())
-//                    .requestMatchers("/customer/**").hasAnyAuthority(ERole.ROLE_STAFF.name(), ERole.ROLE_ADMIN.name())
-//                    .requestMatchers(HttpMethod.GET, "/location", "/location/{id}").permitAll()
-//                    .requestMatchers("/location/**").hasAnyAuthority(ERole.ROLE_STAFF.name(), ERole.ROLE_ADMIN.name())
-//                    .requestMatchers(HttpMethod.GET, "/tour", "/tour/{id}").permitAll()
-//                    .requestMatchers("/tour/**").hasAnyAuthority(ERole.ROLE_STAFF.name(), ERole.ROLE_ADMIN.name())
-//                    .requestMatchers("/tour-info/**").hasAnyAuthority(ERole.ROLE_STAFF.name(), ERole.ROLE_ADMIN.name())
-//                    .requestMatchers("/**").permitAll()
-//               .anyRequest().authenticated()
-//                ).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
         http.cors().configurationSource(request -> corsConfiguration);
         http.csrf(csrf -> csrf.disable());
 

@@ -20,4 +20,5 @@ public class StaffDTO {
     private String address;
     private Boolean gender;
     private LocalDate birthday;
+    private Boolean statusWorking;
 }

@@ -45,8 +45,8 @@ public class StaffController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SuccessResponse> delete(@PathVariable("id")Long id){
-        staffService.delete(id);
+    public ResponseEntity<SuccessResponse> delete(@PathVariable("id")String id){
+        staffService.delete(Long.parseLong(id));
         return ResponseEntity.ok(new SuccessResponse(("delete staff is successful")));
     }
 

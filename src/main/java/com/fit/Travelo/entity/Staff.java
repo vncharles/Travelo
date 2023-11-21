@@ -23,7 +23,7 @@ public class Staff {
     private String address;
     private Boolean gender;
     private LocalDate birthday;
-
+    private Boolean statusWorking;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private User user;
 }
