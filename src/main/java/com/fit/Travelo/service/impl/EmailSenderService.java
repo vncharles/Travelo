@@ -43,6 +43,7 @@ public class EmailSenderService {
             @Override
             public void run() {
                 mailSender.send(mimeMessage);
+                System.out.println("Send mail oke");
             }
         });
     }

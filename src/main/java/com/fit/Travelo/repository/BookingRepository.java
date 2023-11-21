@@ -16,4 +16,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findByCustomer(Customer customer);
 
     List<Booking> findByCustomer_EmailOrderByCreatedAtDesc(String email);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM `travelo-app`.t_booking order by `created_at` DESC;")
+    List<Booking> findAllOrderByCreatedAtDesc();
 }

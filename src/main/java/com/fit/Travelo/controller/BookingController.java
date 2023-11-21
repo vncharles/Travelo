@@ -35,14 +35,14 @@ public class BookingController {
     }
 
     @PostMapping("/staff-create")
-    public ResponseEntity<SuccessResponse> staffCreate(@RequestBody @Valid BookingRequest request){
+    public ResponseEntity<SuccessResponse> staffCreate(@RequestBody BookingRequest request){
         bookingService.addByStaff(request);
         return ResponseEntity.ok(new SuccessResponse("Create Booking by Staff is success"));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<SuccessResponse> update(@PathVariable("id") Long id,
-                                                  @RequestBody @Valid BookingRequest request){
+                                                  @RequestBody BookingRequest request){
         bookingService.update(id, request);
         return ResponseEntity.ok(new SuccessResponse("update booking is success"));
     }

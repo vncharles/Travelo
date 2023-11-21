@@ -32,7 +32,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingDTO> getList() {
 
-        List<Booking> list = bookingRepository.findAll();
+        List<Booking> list = bookingRepository.findAllOrderByCreatedAtDesc();
         return list.stream().map((booking) ->{
             return BookingMapper.bookingToBookingDTO(booking);
 
@@ -152,6 +152,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setCustomer(customer);
         booking.setStaff(staff);
         booking.setTour(tour);
+        booking.setCreatedAt(LocalDate.now());
         booking.setNumberPerson(request.getNumberPerson());
         booking.setStatus(EStatusBooking.UNPAID);
         booking.setTotalPrice(booking.getTotalPrice());
@@ -163,11 +164,11 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public void update(Long id, BookingRequest request) {
         Booking booking = bookingRepository.findById(id).orElseThrow(() -> {
-            throw new NotFoundException(404, "Booking id is not found");
+            throw new NotFoundException(404, "Booking không tồn tại");
         });
 
         if (booking.getStatus() != EStatusBooking.NEW && booking.getStatus() != EStatusBooking.UNPAID)
-            throw new ForbiddenException(404, booking.getStatus().name() + " Booking, can not update anything");
+            throw new BadRequestException(400, "Vé không thể hủy");
 
         if (request.getStatus() != null){
             Staff staff = staffRepository.findStaffByEmail(Authen.getEmail());
@@ -180,8 +181,12 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public void delete(Long id) {
         Booking booking = bookingRepository.findById(id).orElseThrow(() -> {
-            throw new NotFoundException(404, "Booking id is not found");
+            throw new NotFoundException(404, "Booking không tồn tại");
         });
+
+        if (booking.getStatus() != EStatusBooking.NEW && booking.getStatus() != EStatusBooking.UNPAID)
+            throw new BadRequestException(400, "Vé không thể hủy");
+
         Tour tour = booking.getTour();
         tour.increaseStock(booking.getNumberPerson());
         tourRepository.save(tour);
