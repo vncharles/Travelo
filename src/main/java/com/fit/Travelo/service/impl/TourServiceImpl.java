@@ -45,8 +45,8 @@ public class TourServiceImpl implements TourService {
     @Override
     public void add(TourRequest request) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime start = LocalDateTime.parse(request.getStartDate(), dateTimeFormatter);
-        LocalDateTime end = LocalDateTime.parse(request.getEndDate(), dateTimeFormatter);
+        LocalDateTime start =request.getStartDate();
+        LocalDateTime end = request.getEndDate();
 
         if (start.isAfter(end)){
             throw new BadRequestException(400, "Start date must be before End date");
@@ -89,10 +89,10 @@ public class TourServiceImpl implements TourService {
         LocalDateTime end = tour.getEndDate();
 
         if (request.getStartDate() != null){
-            start = LocalDateTime.parse(request.getStartDate(), dateTimeFormatter);
+            start = request.getStartDate();
         }
         if (request.getEndDate() != null){
-            end = LocalDateTime.parse(request.getEndDate(), dateTimeFormatter);
+            end = request.getEndDate();
         }
 
         if (start.isAfter(end)){

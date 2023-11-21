@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 @Data
 public class TourRequest {
     private Long tourInfoId;
-    private String startDate;
-    private String endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private Double price;
     private Integer stock;
 
